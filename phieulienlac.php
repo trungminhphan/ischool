@@ -7,7 +7,6 @@ $csrf = new CSRF_Protect();
 $id_lophoc = isset($_GET['id_lophoc']) ? $_GET['id_lophoc'] : '';
 $id_namhoc = isset($_GET['id_namhoc']) ? $_GET['id_namhoc'] : '';
 $id_hocsinh = isset($_GET['id_hocsinh']) ? $_GET['id_hocsinh'] : '';
-
 $lophoc_list = $lophoc->get_all_list();
 $namhoc_list = $namhoc->get_list_limit(3);
 $ranges_hk1=array();$ranges_hk2 = array();$ranges_cn = array();
@@ -16,7 +15,6 @@ $hocluc_hk1=''; $hocluc_hk2='';$hocluc_cn='';
 $hanhkiem_hk1='';$hanhkiem_hk2='';$hanhkiem_cn='';
 $diemxephang_hk1=0;$diemxephang_hk2=0;$diemxephang_cn=0;
 $danhhieu_hk1='';$danhhieu_hk2='';$danhhieu_cn='';
-
 if(isset($_GET['submit'])){
 	if($id_namhoc && $id_lophoc && $id_hocsinh){
 		$danhsachlop->id_lophoc = $id_lophoc;
@@ -41,7 +39,7 @@ if(isset($_GET['submit'])){
 		$(".select2").select2();
 		$("#id_namhoc").change(function(){
 			var id_namhoc = $(this).val();
-			$.get("load_danhsachlophoc.html?id_namhoc=" + id_namhoc, function(data){
+			$.get("load_danhsachlophoc.html?id_namhoc=" + id_namhoc + "&id_lophoc=<?php echo $id_namhoc; ?>", function(data){
 				$("#id_lophoc").html(data); $("#id_lophoc").select2();
 				$.get("load_danhsachhocsinh.html?id_namhoc="+id_namhoc + "&id_lophoc="+$("#id_lophoc").val(), function(hocsinh){
 					$("#id_hocsinh").html(hocsinh);$("#id_hocsinh").select2();
@@ -53,7 +51,7 @@ if(isset($_GET['submit'])){
 				$("#id_hocsinh").html(hocsinh);$("#id_hocsinh").select2();
 			});
 		});
-		$.get("load_danhsachlophoc.html?id_namhoc=" + $("#id_namhoc").val(), function(data){
+		$.get("load_danhsachlophoc.html?id_namhoc=" + $("#id_namhoc").val()+"&id_lophoc=<?php echo $id_lophoc; ?>", function(data){
 			$("#id_lophoc").html(data);$("#id_lophoc").select2();
 			$.get("load_danhsachhocsinh.html?id_namhoc=" + $("#id_namhoc").val() + "&id_lophoc=" + $("#id_lophoc").val() + "&id_hocsinh=<?php echo $id_hocsinh; ?>", function(hocsinh){
 				$("#id_hocsinh").html(hocsinh);$("#id_hocsinh").select2();
@@ -67,7 +65,7 @@ if(isset($_GET['submit'])){
 	});
 </script>
 <h1><a href="index.html" class="nav-button transform"><span></span></a>&nbsp;In phiếu liên lạc từng học sinh.</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET" id="formloaddanhsach">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="GET" id="formloaddanhsach">
 <div class="grid example">
 	<div class="row cells12">
 		<div class="cell colspan2 padding-top-10 align-right">Năm học</div>
@@ -102,7 +100,6 @@ if(isset($_GET['submit'])){
 </div>
 </form>
 <hr />
-
 <?php if(isset($phieulienlac_list) && $phieulienlac_list): ?>
 <table width="850" align="center" border="0" cellpadding="10">
 	<tr>

@@ -130,8 +130,9 @@
 			$diemtrungbinh_hk2 = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
 			$diemtrungbinh = round(($diemtrungbinh_hk1 + ($diemtrungbinh_hk2*2))/3,1);
 			//$diemtrungbinh = round($sum_diem_hocsinh / $count_diem_hocsinh, 1);
-
 			$diemxephang += $diemtrungbinh;
+		} else if($count_diem_hocsinh_hk2){
+			$diemtrungbinh = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
 		} else {
 			$diemtrungbinh = '';
 		}

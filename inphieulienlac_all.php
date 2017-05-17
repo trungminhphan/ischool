@@ -7,16 +7,9 @@ $csrf = new CSRF_Protect();
 $id_lophoc = isset($_GET['id_lophoc']) ? $_GET['id_lophoc'] : '';
 $id_namhoc = isset($_GET['id_namhoc']) ? $_GET['id_namhoc'] : '';
 //$id_hocsinh = isset($_GET['id_hocsinh']) ? $_GET['id_hocsinh'] : '';
-
 $lophoc_list = $lophoc->get_all_list();
 $namhoc_list = $namhoc->get_list_limit(3);
 $ranges_hk1=array();$ranges_hk2 = array();$ranges_cn = array();
-$scores_hk1=''; $scores_hk2='';$scores_cn='';
-$hocluc_hk1=''; $hocluc_hk2='';$hocluc_cn='';
-$hanhkiem_hk1='';$hanhkiem_hk2='';$hanhkiem_cn='';
-$diemxephang_hk1=0;$diemxephang_hk2=0;$diemxephang_cn=0;
-$danhhieu_hk1='';$danhhieu_hk2='';$danhhieu_cn='';
-
 if(isset($_GET['submit'])){
 	if($id_namhoc && $id_lophoc){
 		$danhsachlop->id_lophoc = $id_lophoc;
@@ -64,6 +57,8 @@ if(isset($_GET['submit'])){
 </head>
 <body>
 <?php
+$scores_hk1=''; $scores_hk2='';$scores_cn='';
+$hocluc_hk1=''; $hocluc_hk2='';$hocluc_cn='';
 $giangday->id_lophoc = $id_lophoc; $giangday->id_namhoc = $id_namhoc;
 $list_monhoc = $giangday->get_list_monhoc();
 require_once('get_scores_hk1.php'); require_once('get_scores_hk2.php');
@@ -80,6 +75,9 @@ foreach($danhsachlop_list as $k => $l){
 $arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
 foreach($arr_hocsinh as $hs):
 $j=1;
+$hanhkiem_hk1='';$hanhkiem_hk2='';$hanhkiem_cn='';
+$diemxephang_hk1=0;$diemxephang_hk2=0;$diemxephang_cn=0;
+$danhhieu_hk1='';$danhhieu_hk2='';$danhhieu_cn='';
 $danhsachlop->id_hocsinh = $hs['id_hocsinh'];
 $phieulienlac_list = $danhsachlop->get_phieulienlac();
 if(isset($phieulienlac_list) && $phieulienlac_list): ?>
