@@ -122,6 +122,7 @@ $scores_hk1 = sort_arr_desc($ranges_hk1);
 $scores_hk2 = sort_arr_desc($ranges_hk2);
 $scores_cn = sort_arr_desc($ranges_cn);
 $j=1;
+$sum_diem_canam = 0; $count_diem_canam=0;
 $vang_cophep_hk1 = 0;$vang_khongphep_hk1=0;
 $vang_cophep_hk2 = 0;$vang_khongphep_hk2=0;
 $trungbinh_cd_hk1 = 0;$trungbinh_d_hk1 = 0; $trungbinhduoi65_hk1 = 0; $trungbinhduoi5_hk1=0; $trungbinhduoi35_hk1=0;$trungbinhduoi2_hk1=0;
@@ -318,6 +319,7 @@ if(isset($list_monhoc) && $list_monhoc){
 
 					if($trungbinh1 && $trungbinh2) {
 						$canam = round(($trungbinh1 + (2 * $trungbinh2))/3, 1);
+						$sum_diem_canam += $canam; $count_diem_canam++;
 						if($mamonhoc == 'TOAN') $diemtrungbinhtoan_cn = $canam;
 						if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan_cn = $canam;
 						if($canam){
@@ -574,7 +576,7 @@ if(isset($list_monhoc) && $list_monhoc){
 	else $trungbinh_hocky1 = '';
 	if($count_hocky2) $trungbinh_hocky2 = round($sum_hocky2 / $count_hocky2, 1);
 	else $trungbinh_hocky2 = '';
-	if($trungbinh_hocky1 && $trungbinh_hocky2) $trungbinh_canam = round((($trungbinh_hocky2 * 2) + $trungbinh_hocky1)/3, 1);
+	if($trungbinh_hocky1 && $trungbinh_hocky2) $trungbinh_canam = round($sum_diem_canam/$count_diem_canam, 1);
 	else $trungbinh_canam = '';
 	//Xep loai hoc luc hoc ky 1
 	if($trungbinh_hocky1){

@@ -99,15 +99,16 @@
 						$trungbinhmon = round($sum_total / $count_columns, 1);
 						if($hocky=='hocky1'){
 							$tb_mon_hk1 = $trungbinhmon;
-							$sum_diem_hocsinh_hk1 += $trungbinhmon; $count_diem_hocsinh_hk1++;
+							//$sum_diem_hocsinh_hk1 += $trungbinhmon; $count_diem_hocsinh_hk1++;
 						} else {
 							$tb_mon_hk2 = $trungbinhmon;
-							$sum_diem_hocsinh_hk2 += $trungbinhmon; $count_diem_hocsinh_hk2++;
+							//$sum_diem_hocsinh_hk2 += $trungbinhmon; $count_diem_hocsinh_hk2++;
 						}
 					} 
 				}
 				if($tb_mon_hk1 && $tb_mon_hk2){
 					$tb_mon_cn = round(($tb_mon_hk1 + $tb_mon_hk2*2)/3,1);
+					$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
 					/*if($hocky=='hocky1'){
 						$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
 					} else {
@@ -124,8 +125,14 @@
 				}
 			}
 		}
+		if($count_diem_hocsinh){
+			$diemtrungbinh = round($sum_diem_hocsinh/$count_diem_hocsinh,1);
+			$diemxephang += $diemtrungbinh;
+		} else {
+			$diemtrungbinh = '';
+		}
 
-		if($count_diem_hocsinh_hk1 && $count_diem_hocsinh_hk2){
+		/*if($count_diem_hocsinh_hk1 && $count_diem_hocsinh_hk2){
 			$diemtrungbinh_hk1 = round($sum_diem_hocsinh_hk1 / $count_diem_hocsinh_hk1, 1); 
 			$diemtrungbinh_hk2 = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
 			$diemtrungbinh = round(($diemtrungbinh_hk1 + ($diemtrungbinh_hk2*2))/3,1);
@@ -135,7 +142,7 @@
 			$diemtrungbinh = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
 		} else {
 			$diemtrungbinh = '';
-		}
+		}*/
 
 		if(isset($ds['danhgia_hocky2']['hanhkiem'])){
 			$hanhkiem = $ds['danhgia_hocky2']['hanhkiem'];
