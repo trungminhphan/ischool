@@ -46,7 +46,15 @@ class DanhSachLop{
 		$query = array('$and' => array(
 				array('id_lophoc'=> new MongoId($this->id_lophoc)),
 				array('id_namhoc'=> new MongoId($this->id_namhoc)),
-				array('$or' => array(array('danhgia_hocky1.nghiluon' => 0), array('danhgia_hocky2.nghiluon' => 0)))));
+				array('$or' => array(array('danhgia_hocky1.nghiluon' => 0), array('danhgia_hocky1.nghiluon' => array('$exists' => false)))),
+				array('$or' => array(array('danhgia_hocky2.nghiluon' => 0), array('danhgia_hocky2.nghiluon' => array('$exists' => false))))));
+		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));
+	}
+	public function get_danh_sach_lop_except_nghiluon_hocky($hocky){
+		$query = array('$and' => array(
+				array('id_lophoc'=> new MongoId($this->id_lophoc)),
+				array('id_namhoc'=> new MongoId($this->id_namhoc)),
+				array('$or' => array(array('danhgia_'.$hocky.'.nghiluon' => 0), array('danhgia_'.$hocky.'.nghiluon' => array('$exists' => false))))));
 		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));
 	}
 	public function get_danh_sach_lop_pll_giuaky(){

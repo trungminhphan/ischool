@@ -19,7 +19,11 @@ if(isset($_GET['submit'])){
 	if($id_namhoc && $id_lophoc){
 		$danhsachlop->id_lophoc = $id_lophoc;
 		$danhsachlop->id_namhoc = $id_namhoc;
-		$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon();
+		if($hocky == 'canam'){
+			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon();
+		} else {
+			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky);
+		}
 		$siso = $danhsachlop_list->count();
 		$giaovienchunhiem->id_lophoc = $id_lophoc;
 		$giaovienchunhiem->id_namhoc = $id_namhoc;
@@ -528,7 +532,7 @@ $scores = sort_arr_desc($ranges_cn);
 				}
 
 				if($tb_mon_hk1 && $tb_mon_hk2){
-					$tb_mon_cn = round(($tb_mon_hk1 + $tb_mon_hk2*2)/3,1);
+					$tb_mon_cn = round(($tb_mon_hk1+$tb_mon_hk2*2)/3,1);
 					/*if($hocky=='hocky1'){
 						$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
 					} else {
@@ -558,7 +562,7 @@ $scores = sort_arr_desc($ranges_cn);
 			$diemtrungbinh = round(($diemtrungbinh_hk1 + ($diemtrungbinh_hk2*2))/3,1);
 			//$diemtrungbinh = round($sum_diem_hocsinh / $count_diem_hocsinh, 1);
 			$diemxephang += $diemtrungbinh;
-		} else if($count_diem_hocsinh_hk2){
+		} else if(!$count_diem_hocsinh_hk1 && $count_diem_hocsinh_hk2){
 			$diemtrungbinh = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
 		} else {
 			$diemtrungbinh = '';

@@ -18,7 +18,11 @@ if(isset($_GET['submit'])){
 	if($id_namhoc && $id_lophoc){
 		$danhsachlop->id_lophoc = $id_lophoc;
 		$danhsachlop->id_namhoc = $id_namhoc;
-		$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon();
+		if($hocky == 'canam'){
+			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon();
+		} else {
+			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky);
+		}
 		$siso = $danhsachlop_list->count();
 		$giaovienchunhiem->id_lophoc = $id_lophoc;
 		$giaovienchunhiem->id_namhoc = $id_namhoc;
@@ -597,14 +601,13 @@ $scores = sort_arr_desc($ranges_cn);
 				echo '<td align="center" class="marks">'.($trungbinhmon !='' ? format_decimal($trungbinhmon,1) : '').'</td>';
 			}
 		}
-
 		if($count_diem_hocsinh_hk1 && $count_diem_hocsinh_hk2){
 			$diemtrungbinh_hk1 = round($sum_diem_hocsinh_hk1 / $count_diem_hocsinh_hk1, 1); 
 			$diemtrungbinh_hk2 = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
 			$diemtrungbinh = round(($diemtrungbinh_hk1 + ($diemtrungbinh_hk2*2))/3,1);
 			//$diemtrungbinh = round($sum_diem_hocsinh / $count_diem_hocsinh, 1);
 			$diemxephang += $diemtrungbinh;
-		} else if($count_diem_hocsinh_hk2){
+		} else if(!$count_diem_hocsinh_hk1 && $count_diem_hocsinh_hk2){
 			$diemtrungbinh = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
 		} else {
 			$diemtrungbinh = '';
@@ -618,10 +621,10 @@ $scores = sort_arr_desc($ranges_cn);
 		}
 		$hocky = 'hocky2';
 		if(isset($ds['danhgia_'.$hocky])){
-			$hanhkiem = $ds['danhgia_'.$hocky]['hanhkiem'];
+			$hanhkiem = isset($ds['danhgia_'.$hocky]['hanhkiem']) ? $ds['danhgia_'.$hocky]['hanhkiem'] : '';
 			echo '<td align="center">'.(isset($nghicophep) ? $nghicophep : 0).'</td>';
 			echo '<td align="center">'.(isset($nghikhongphep) ? $nghikhongphep : 0).'</td>';
-			echo '<td align="center">'.$ds['danhgia_'.$hocky]['hanhkiem'].'</td>';
+			echo '<td align="center">'.$hanhkiem.'</td>';
 			
 			if($hanhkiem == 'T'){
 				$count_hk_tot++; if($gioitinh == 'Nữ') $count_hk_tot_nu++;
@@ -632,7 +635,7 @@ $scores = sort_arr_desc($ranges_cn);
 			} else if($hanhkiem == 'Y'){
 				$count_hk_yeu++; if($gioitinh == 'Nữ') $count_hk_yeu_nu++;
 			} 
-			if($ds['danhgia_'.$hocky]['nghiluon'] == 1){
+			if(isset($ds['danhgia_'.$hocky]['nghiluon']) && $ds['danhgia_'.$hocky]['nghiluon'] == 1) {
 				$nghiluon = '<img src="images/icon_yes.png" />'; $count_nghiluon++;
 			} else $nghiluon = '';
 		} else {
@@ -640,8 +643,6 @@ $scores = sort_arr_desc($ranges_cn);
 			echo '<td></td>';
 			echo '<td></td>';
 		}
-		
-
 		//Xep loai hoc luc
 		if($diemtrungbinh >= 8 && ($diemtrungbinhtoan >=8 || $diemtrungbinhnguvan >=8) && $trungbinhduoi65==0 &&  $trungbinh_cd==0){
 			$hocluc = 'Giỏi';
