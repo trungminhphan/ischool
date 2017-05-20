@@ -17,7 +17,11 @@ if(isset($_GET['submit'])){
 	if($id_namhoc && $id_lophoc){
 		$danhsachlop->id_lophoc = $id_lophoc;
 		$danhsachlop->id_namhoc = $id_namhoc;
-		$danhsachlop_list = $danhsachlop->get_danh_sach_lop_tk($hocky);
+		if($hocky == 'canam'){
+			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon();
+		} else {
+			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_tk($hocky);
+		}
 		$siso = $danhsachlop_list->count();
 		$giaovienchunhiem->id_lophoc = $id_lophoc;
 		$giaovienchunhiem->id_namhoc = $id_namhoc;
@@ -92,9 +96,9 @@ $giangday->id_lophoc = $id_lophoc; $giangday->id_namhoc = $id_namhoc;
 $list_monhoc = $giangday->get_list_monhoc();
 ?>
 <?php
+if($hocky == 'hocky1' || $hocky == 'hocky2'):
 require_once('get_scores.php');
 $scores = sort_arr_desc($ranges);
-if($hocky == 'hocky1' || $hocky == 'hocky2'):
 ?>
 <table width="100%" class="table striped border bordered hovered dataTable" id="bangdiemtheohang" cellpadding="3">
 <thead>
@@ -374,12 +378,19 @@ $scores = sort_arr_desc($ranges_cn);
 <tbody>
 <?php
 	$i = 1;
-	foreach ($danhsachlop_list as $ds) {
+	$arr_hocsinh = iterator_to_array($danhsachlop_list);
+	foreach($danhsachlop_list as $k => $l){
+		$hocsinh->id = $l['id_hocsinh'];
+		$hs = $hocsinh->get_one();
+		$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+	}
+	$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
+	foreach ($arr_hocsinh as $ds) {
+		$sum_diem_hocsinh_hk1 = 0; $count_diem_hocsinh_hk1 = 0; $diemtrungbinh_hk1=0;
+		$sum_diem_hocsinh_hk2= 0; $count_diem_hocsinh_hk2 = 0; $diemtrungbinh_hk2=0;
 		$sum_diem_hocsinh = 0; $count_diem_hocsinh = 0; $diemtrungbinhtoan=0;$diemtrungbinhnguvan=0;
-		$trungbinh_cd = 0;$trungbinh_d = 0; $trungbinhduoi65 = 0; $trungbinhduoi5=0; $trungbinhduoi35=0;$trungbinhduoi2=0;
+		$trungbinh_cd = 0;$trungbinh_d=0; $trungbinhduoi65 = 0; $trungbinhduoi5=0; $trungbinhduoi35=0;$trungbinhduoi2=0;
 		$hanhkiem = '';$hocluc=''; $diemxephang = '';
-		//if($i%2==0) $class='eve'; else $class='odd';
-		//if($i%5==0) $line = 'sp'; else $line = '';
 		$hocsinh->id = $ds['id_hocsinh']; $hs = $hocsinh->get_one();
 		//echo '<td align="center">'.$i.'</td>';
 		foreach ($list_monhoc as $mmh) {
@@ -456,44 +467,47 @@ $scores = sort_arr_desc($ranges_cn);
 						}
 					}
 				}
-
+				$khoi = substr($lh['malophoc'], 0 ,1);
 				if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
-					if($diem_d > 0 && $diem_cd==0){
-						$trungbinhmon = 'Đ';$trungbinh_d++;
-					} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
-						$trungbinhmon == 'Đ';$trungbinh_d++;
-					} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
-						$trungbinhmon = 'M';
-					} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.66){
-						$trungbinhmon = 'CĐ'; $trungbinh_cd++;
-					} else {
-						$trungbinhmon = '';
-					}
-					if($hocky=='hocky1'){
-						$tb_mon_hk1 = $trungbinhmon;
-					} else {
-						$tb_mon_hk2 = $trungbinhmon;
+					if($hocky == 'hocky1' && $khoi == '9' && ($mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT')){
+						if($diem_d > 0 && $diem_cd==0){
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
+							$tb_mon_cn = 'M';
+						} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
+							$tb_mon_cn = 'CĐ'; $trungbinh_cd++;
+						} else {
+							$tb_mon_cn = '';
+						}
+					} else if($hocky == 'hocky2'  && ($khoi != '9' || $mamonhoc=='THEDUC')) {
+						if($diem_d > 0 && $diem_cd==0){
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
+							$tb_mon_cn = 'M';
+						} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
+							$tb_mon_cn = 'CĐ'; $trungbinh_cd++;
+						} else {
+							$tb_mon_cn = '';
+						}
 					}
 				} else {
 					if($sum_total && $count_columns){
 						$trungbinhmon = round($sum_total / $count_columns, 1);
 						if($hocky=='hocky1'){
 							$tb_mon_hk1 = $trungbinhmon;
+							//$sum_diem_hocsinh_hk1 += $trungbinhmon; $count_diem_hocsinh_hk1++;
 						} else {
 							$tb_mon_hk2 = $trungbinhmon;
+							//$sum_diem_hocsinh_hk2 += $trungbinhmon; $count_diem_hocsinh_hk2++;
 						}
-					} 
-				}
-				if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
-					$tb_mon_cn = $tb_mon_hk2;
-				} else {
+					}
 					if($tb_mon_hk1 && $tb_mon_hk2){
 						$tb_mon_cn = round(($tb_mon_hk1 + $tb_mon_hk2*2)/3,1);
-						if($hocky=='hocky1'){
-							$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
-						} else {
-							$sum_diem_hocsinh += $tb_mon_cn*2; $count_diem_hocsinh+=2;
-						}
+						$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
 						if($mamonhoc == 'TOAN') $diemtrungbinhtoan = $tb_mon_cn;
 						if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan = $tb_mon_cn;
 						if($tb_mon_cn < 6.5) $trungbinhduoi65++;
@@ -505,18 +519,11 @@ $scores = sort_arr_desc($ranges_cn);
 					}
 				}
 			}
-			if($tb_mon_cn=='Đ' || $tb_mon_cn =='CĐ' || $tb_mon_cn=='M'){
-				//echo '<td align="center" class="marks">'.$tb_mon_cn.'</td>';
-			} else {
-				//echo '<td align="center" class="marks">'.($tb_mon_cn !='' ? format_decimal($tb_mon_cn,1) : '').'</td>';
-			}
 		}
-
-		if($sum_diem_hocsinh && $count_diem_hocsinh){
-			$diemtrungbinh = round($sum_diem_hocsinh / $count_diem_hocsinh, 1);
+		if($count_diem_hocsinh){
+			$diemtrungbinh = round($sum_diem_hocsinh/$count_diem_hocsinh,1);
 			$diemxephang += $diemtrungbinh;
-		}
-		else {
+		} else {
 			$diemtrungbinh = '';
 		}
 		$nghicophep = 0;$nghikhongphep=0;
@@ -608,6 +615,7 @@ $scores = sort_arr_desc($ranges_cn);
 		} else {
 			$xephang = '';
 		}
+
 		if($danhhieu_list == $danhhieu || ($danhhieu_list == 'All') && $danhhieu){
 			echo '<tr>';
 			echo '<td>'.$i.'</td>';

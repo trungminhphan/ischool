@@ -463,7 +463,14 @@ $scores = sort_arr_desc($ranges_cn);
 </tr>
 <?php
 	$i = 1;
-	foreach ($danhsachlop_list as $ds) {
+	$arr_hocsinh = iterator_to_array($danhsachlop_list);
+	foreach($danhsachlop_list as $k => $l){
+		$hocsinh->id = $l['id_hocsinh'];
+		$hs = $hocsinh->get_one();
+		$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+	}
+	$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
+	foreach ($arr_hocsinh as $ds) {
 		$sum_diem_hocsinh_hk1 = 0; $count_diem_hocsinh_hk1 = 0; $diemtrungbinh_hk1=0;
 		$sum_diem_hocsinh_hk2= 0; $count_diem_hocsinh_hk2 = 0; $diemtrungbinh_hk2=0;
 		$sum_diem_hocsinh = 0; $count_diem_hocsinh = 0; $diemtrungbinhtoan=0;$diemtrungbinhnguvan=0;
@@ -483,32 +490,32 @@ $scores = sort_arr_desc($ranges_cn);
 				$count_columns = 0; $sum_total = 0; $trungbinhmon = 0;
 				$monhoc->id = $mmh['id_monhoc']; $mh=$monhoc->get_one(); $mamonhoc = $mh['mamonhoc'];
 				$diem_m = 0; $diem_d=0; $diem_cd=0; $diem_thi_cd = '';
-				if(isset($ds[$hocky])){
+				if(isset($ds[$hocky]) && $ds[$hocky]){
 					foreach($ds[$hocky] as $hk){
 						if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
 							if($hk['id_monhoc'] == $mmh['id_monhoc']){
-								if(isset($hk['diemmieng'])){
+								if(isset($hk['diemmieng']) && $hk['diemmieng']){
 									foreach($hk['diemmieng'] as $key => $value){
 										if($value == 'M') $diem_m++;
 										if($value=='Đ') $diem_d++;
 										if($value=='CĐ') $diem_cd++;
 									}
 								}
-								if(isset($hk['diem15phut'])){
+								if(isset($hk['diem15phut']) && $hk['diem15phut']){
 									foreach($hk['diem15phut'] as $key => $value){
 										if($value == 'M') $diem_m++;
 										if($value=='Đ') $diem_d++;
 										if($value=='CĐ') $diem_cd++;
 									}
 								}
-								if(isset($hk['diem1tiet'])){
+								if(isset($hk['diem1tiet']) && $hk['diem1tiet']){
 									foreach($hk['diem1tiet'] as $key => $value){
 										if($value == 'M') $diem_m++;
 										if($value=='Đ') $diem_d++;
 										if($value=='CĐ') $diem_cd++;
 									}
 								}
-								if(isset($hk['diemthi'])){
+								if(isset($hk['diemthi']) && $hk['diemthi']){
 									foreach($hk['diemthi'] as $key => $value){
 										if($value == 'M') $diem_m++;
 										if($value=='Đ') $diem_d++;
@@ -519,28 +526,28 @@ $scores = sort_arr_desc($ranges_cn);
 							}
 						} else {
 							if($hk['id_monhoc'] == $mmh['id_monhoc']){
-								if(isset($hk['diemmieng'])){
+								if(isset($hk['diemmieng']) && $hk['diemmieng']){
 									foreach($hk['diemmieng'] as $key => $value){
 										if(isset($value)) {
 											$sum_total += $value; $count_columns++;
 										}
 									}
 								}
-								if(isset($hk['diem15phut'])){
+								if(isset($hk['diem15phut']) && $hk['diem15phut']){
 									foreach($hk['diem15phut'] as $key => $value){
 										if(isset($value)){
 											$sum_total += $value; $count_columns++;	
 										}
 									}
 								}
-								if(isset($hk['diem1tiet'])){
+								if(isset($hk['diem1tiet']) && $hk['diem1tiet']){
 									foreach($hk['diem1tiet'] as $key => $value){
 										if(isset($value)){
 											$sum_total += $value * 2; $count_columns += 2;	
 										}
 									}
 								}
-								if(isset($hk['diemthi'])){
+								if(isset($hk['diemthi']) && $hk['diemthi']){
 									foreach($hk['diemthi'] as $key => $value){
 										if(isset($value)){
 											$sum_total += $value * 3; $count_columns +=3;	
@@ -551,18 +558,32 @@ $scores = sort_arr_desc($ranges_cn);
 						}
 					}
 				}
-
+				$khoi = substr($lh['malophoc'], 0 ,1);
 				if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
-					if($diem_d > 0 && $diem_cd==0){
-						$trungbinhmon = 'Đ'; if($hocky == 'hocky2') $trungbinh_d++;
-					} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
-						$trungbinhmon = 'Đ'; if($hocky == 'hocky2')  $trungbinh_d++;
-					} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
-						$trungbinhmon = 'M';
-					} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
-						$trungbinhmon = 'CĐ'; if($hocky == 'hocky2')  $trungbinh_cd++;
-					} else {
-						$trungbinhmon = '';
+					if($hocky == 'hocky1' && $khoi == '9' && ($mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT')){
+						if($diem_d > 0 && $diem_cd==0){
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
+							$tb_mon_cn = 'M';
+						} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
+							$tb_mon_cn = 'CĐ'; $trungbinh_cd++;
+						} else {
+							$tb_mon_cn = '';
+						}
+					} else if($hocky == 'hocky2'  && ($khoi != '9' || $mamonhoc=='THEDUC')) {
+						if($diem_d > 0 && $diem_cd==0){
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
+							$tb_mon_cn = 'M';
+						} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
+							$tb_mon_cn = 'CĐ'; $trungbinh_cd++;
+						} else {
+							$tb_mon_cn = '';
+						}
 					}
 				} else {
 					if($sum_total && $count_columns){
@@ -574,27 +595,20 @@ $scores = sort_arr_desc($ranges_cn);
 							$tb_mon_hk2 = $trungbinhmon;
 							//$sum_diem_hocsinh_hk2 += $trungbinhmon; $count_diem_hocsinh_hk2++;
 						}
-					} 
-				}
-
-				if($tb_mon_hk1 && $tb_mon_hk2){
-					$tb_mon_cn = round(($tb_mon_hk1 + $tb_mon_hk2*2)/3,1);
-					$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
-					/*if($hocky=='hocky1'){
+					}
+					if($tb_mon_hk1 && $tb_mon_hk2){
+						$tb_mon_cn = round(($tb_mon_hk1 + $tb_mon_hk2*2)/3,1);
 						$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
+						if($mamonhoc == 'TOAN') $diemtrungbinhtoan = $tb_mon_cn;
+						if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan = $tb_mon_cn;
+						if($tb_mon_cn < 6.5) $trungbinhduoi65++;
+						if($tb_mon_cn < 5 ) $trungbinhduoi5++;
+						if($tb_mon_cn < 3.5) $trungbinhduoi35++;
+						if($tb_mon_cn < 2) $trungbinhduoi2++;
 					} else {
-						$sum_diem_hocsinh += $tb_mon_cn*2; $count_diem_hocsinh+=2;
-					}*/
-					if($mamonhoc == 'TOAN') $diemtrungbinhtoan = $tb_mon_cn;
-					if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan = $tb_mon_cn;
-					if($tb_mon_cn < 6.5) $trungbinhduoi65++;
-					if($tb_mon_cn < 5 ) $trungbinhduoi5++;
-					if($tb_mon_cn < 3.5) $trungbinhduoi35++;
-					if($tb_mon_cn < 2) $trungbinhduoi2++;
-				} else {
-					$tb_mon_cn = '';
+						$tb_mon_cn = '';
+					}
 				}
-				
 			}
 			if($tb_mon_cn=='Đ' || $tb_mon_cn =='CĐ' || $tb_mon_cn=='M'){
 				echo '<td align="center" class="marks">'.$tb_mon_cn.'</td>';
@@ -608,17 +622,6 @@ $scores = sort_arr_desc($ranges_cn);
 		} else {
 			$diemtrungbinh = '';
 		}
-		/*if($count_diem_hocsinh_hk1 && $count_diem_hocsinh_hk2){
-			$diemtrungbinh_hk1 = round($sum_diem_hocsinh_hk1 / $count_diem_hocsinh_hk1, 1); 
-			$diemtrungbinh_hk2 = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
-			$diemtrungbinh = round(($diemtrungbinh_hk1 + ($diemtrungbinh_hk2*2))/3,1);
-			//$diemtrungbinh = round($sum_diem_hocsinh / $count_diem_hocsinh, 1);
-			$diemxephang += $diemtrungbinh;
-		} else if(!$count_diem_hocsinh_hk1 && $count_diem_hocsinh_hk2){
-			$diemtrungbinh = round($sum_diem_hocsinh_hk2 / $count_diem_hocsinh_hk2, 1); 
-		} else {
-			$diemtrungbinh = '';
-		}*/
 
 		echo '<td align="center">'.($diemtrungbinh ? format_decimal($diemtrungbinh,1) : $diemtrungbinh).'</td>';
 		$nghicophep = 0;$nghikhongphep=0;

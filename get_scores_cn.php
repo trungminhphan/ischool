@@ -82,17 +82,32 @@
 						}
 					}
 				}
+				$khoi = substr($lh['malophoc'], 0 ,1);
 				if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
-					if($diem_d > 0 && $diem_cd==0){
-						$trungbinhmon = 'Đ'; if($hocky == 'hocky2') $trungbinh_d++;
-					} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
-						$trungbinhmon = 'Đ'; if($hocky == 'hocky2')  $trungbinh_d++;
-					} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
-						$trungbinhmon = 'M';
-					} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
-						$trungbinhmon = 'CĐ'; if($hocky == 'hocky2')  $trungbinh_cd++;
-					} else {
-						$trungbinhmon = '';
+					if($hocky == 'hocky1' && $khoi == '9' && ($mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT')){
+						if($diem_d > 0 && $diem_cd==0){
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
+							$tb_mon_cn = 'M';
+						} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
+							$tb_mon_cn = 'CĐ'; $trungbinh_cd++;
+						} else {
+							$tb_mon_cn = '';
+						}
+					} else if($hocky == 'hocky2'  && ($khoi != '9' || $mamonhoc=='THEDUC')) {
+						if($diem_d > 0 && $diem_cd==0){
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_thi_cd == 'Đ' && $diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.66) {
+							$tb_mon_cn = 'Đ'; $trungbinh_d++;
+						} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
+							$tb_mon_cn = 'M';
+						} else if($diem_cd > 0 && round($diem_d/($diem_d + $diem_cd), 2) < 0.65){
+							$tb_mon_cn = 'CĐ'; $trungbinh_cd++;
+						} else {
+							$tb_mon_cn = '';
+						}
 					}
 				} else {
 					if($sum_total && $count_columns){
@@ -104,24 +119,19 @@
 							$tb_mon_hk2 = $trungbinhmon;
 							//$sum_diem_hocsinh_hk2 += $trungbinhmon; $count_diem_hocsinh_hk2++;
 						}
-					} 
-				}
-				if($tb_mon_hk1 && $tb_mon_hk2){
-					$tb_mon_cn = round(($tb_mon_hk1 + $tb_mon_hk2*2)/3,1);
-					$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
-					/*if($hocky=='hocky1'){
+					}
+					if($tb_mon_hk1 && $tb_mon_hk2){
+						$tb_mon_cn = round(($tb_mon_hk1 + $tb_mon_hk2*2)/3,1);
 						$sum_diem_hocsinh += $tb_mon_cn; $count_diem_hocsinh++;
+						if($mamonhoc == 'TOAN') $diemtrungbinhtoan = $tb_mon_cn;
+						if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan = $tb_mon_cn;
+						if($tb_mon_cn < 6.5) $trungbinhduoi65++;
+						if($tb_mon_cn < 5 ) $trungbinhduoi5++;
+						if($tb_mon_cn < 3.5) $trungbinhduoi35++;
+						if($tb_mon_cn < 2) $trungbinhduoi2++;
 					} else {
-						$sum_diem_hocsinh += $tb_mon_cn*2; $count_diem_hocsinh+=2;
-					}*/
-					if($mamonhoc == 'TOAN') $diemtrungbinhtoan = $tb_mon_cn;
-					if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan = $tb_mon_cn;
-					if($tb_mon_cn < 6.5) $trungbinhduoi65++;
-					if($tb_mon_cn < 5 ) $trungbinhduoi5++;
-					if($tb_mon_cn < 3.5) $trungbinhduoi35++;
-					if($tb_mon_cn < 2) $trungbinhduoi2++;
-				} else {
-					$tb_mon_cn = '';
+						$tb_mon_cn = '';
+					}
 				}
 			}
 		}

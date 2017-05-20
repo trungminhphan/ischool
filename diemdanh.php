@@ -54,7 +54,6 @@ if(isset($_POST['capnhatdiemdanh'])){
 			}
 		}
 	}
-
 	if($id_danhsachlop){
 		foreach ($id_danhsachlop as $key => $value) {
 			$songaycophep = 0; $songaykhongphep=0;
