@@ -552,8 +552,14 @@ if(isset($list_monhoc) && $list_monhoc){
 					} else {
 						$trungbinh2 = '';
 					}
-					$canam = $trungbinh2; if($canam=='Đ'){ $trungbinh_d_cn++; }
-					 
+
+					$khoi = substr($lh['malophoc'], 0 ,1);
+					if($khoi == '9' && ($mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT')){
+						$canam = $trungbinh1;
+					} else {
+						$canam = $trungbinh2;
+					}
+					if($canam=='Đ'){ $trungbinh_d_cn++; }
 					echo '<td class="marks">'.(($trungbinh1 && is_numeric($trungbinh1)) ? format_decimal($trungbinh1,1) : $trungbinh1).'</td>';
 					echo '<td class="marks">'.(($trungbinh2 && is_numeric($trungbinh2)) ? format_decimal($trungbinh2,1) : $trungbinh2).'</td>';
 					echo '<td class="marks">'.(($canam && is_numeric($canam)) ? format_decimal($canam,1) : $canam).'</td>';
