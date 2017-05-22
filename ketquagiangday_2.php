@@ -79,10 +79,9 @@ if($khoi=='THCS'){
 		array_push($arr_lophoc, new MongoId($value['_id']));
 	}
 }
-
 $danhsachlop->id_namhoc = $id_namhoc;
 $danhsachlop->arr_lophoc = $arr_lophoc;
-$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky);
+$danhsachlop_list = $danhsachlop->get_danh_sach_lop_theo_khoi_tk($hocky);
 ?>
 <div class="grid">
 	<div class="row cells12">
@@ -132,6 +131,7 @@ $danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky
 	$sum_kem = 0; $sum_yeu=0; $sum_tb=0;$sum_kha=0;$sum_gioi=0;
 	$sum_duoitb=0; $sum_trentb=0; $sum_tbmien = 0;$sum_soluong = 0;
 	foreach($monhoc_list as $mh){
+		$mamonhoc = $mh['mamonhoc'];
 		if($stt%2 ==0) $class='eve'; else $class='odd';
 		//$count_0_05 = 0;$count_05_1 = 0;$count_1_15 = 0;$count_15_2 = 0;
 		//$count_2_25 = 0;$count_25_3 = 0;$count_3_35 = 0;$count_35_4 = 0;
@@ -149,7 +149,6 @@ $danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky
 					$count_cot1tiet = 0; $sum_cot1tiet = 0;$diemthi = '';
 					foreach($ds[$hocky] as $hk){
 						if($hk['id_monhoc'] == $mh['_id']){
-							$mamonhoc = $mh['mamonhoc'];
 							$count_cotmieng = 0; $sum_cotmieng = 0;
 							//cot mieng hoc ky I
 							if(isset($hk['diemmieng']) && $hk['diemmieng']){

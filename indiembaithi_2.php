@@ -42,7 +42,7 @@ foreach ($list_khoi as $key => $value) {
 
 $danhsachlop->id_namhoc = $id_namhoc;
 $danhsachlop->arr_lophoc = $arr_lophoc;
-$danhsachlop_list = $danhsachlop->get_danh_sach_lop_theo_khoi($hocky);
+$danhsachlop_list = $danhsachlop->get_danh_sach_lop_theo_khoi_tk($hocky);
 ?>
 <table width="100%" align="center" border="0" style="font-size:14px;" cellpadding="10">
 	<tr>
