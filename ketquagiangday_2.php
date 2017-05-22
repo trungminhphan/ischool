@@ -82,7 +82,7 @@ if($khoi=='THCS'){
 
 $danhsachlop->id_namhoc = $id_namhoc;
 $danhsachlop->arr_lophoc = $arr_lophoc;
-$danhsachlop_list = $danhsachlop->get_danh_sach_lop_theo_khoi_tk($hocky);
+$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky);
 ?>
 <div class="grid">
 	<div class="row cells12">

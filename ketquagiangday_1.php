@@ -162,7 +162,7 @@ $mamonhoc = $m['mamonhoc'];
 				$count_8_85 = 0;$count_85_9 = 0;$count_9_95 = 0;$count_95_10 = 0; $count_10=0;
 				$siso=0;
 				$danhsachlop->id_lophoc = $ko['_id'];
-				$danhsachlop_list = $danhsachlop->get_danh_sach_lop_tk($hocky);
+				$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky);
 				$giangday->id_namhoc = $id_namhoc; 
 				$giangday->id_lophoc = $ko['_id']; 
 				$id_giaovien = $giangday->get_id_giaovien();

@@ -157,7 +157,7 @@ $tcm = $tochuyenmon->get_one_by_giaovien();
 			$monhoc->id = $gd['id_monhoc'];$mh = $monhoc->get_one();$mamonhoc = $mh['mamonhoc'];
 			$lophoc->id = $gd['id_lophoc']; $lh = $lophoc->get_one();
 			$danhsachlop->id_lophoc = $gd['id_lophoc'];
-			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_tk($hocky);
+			$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky);
 			$count_0_05 = 0;$count_05_1 = 0;$count_1_15 = 0;$count_15_2 = 0;
 			$count_2_25 = 0;$count_25_3 = 0;$count_3_35 = 0;$count_35_4 = 0;
 			$count_4_45 = 0;$count_45_5 = 0;$count_5_55 = 0;$count_55_6 = 0;

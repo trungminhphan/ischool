@@ -97,7 +97,10 @@ class DanhSachLop{
 	}
 
 	public function get_danh_sach_lop_theo_khoi_tk($hocky){
-		$query = array('id_lophoc' => array('$in' => $this->arr_lophoc),'danhgia_'.$hocky.'.nghiluon' => 0);
+		$query = array('$and' => array(
+				array('id_lophoc' => array('$in' => $this->arr_lophoc)),
+				array('$or' => array(array('danhgia_'.$hocky.'.nghiluon' => 0), array('danhgia_'.$hocky.'.nghiluon' => array('$exists' => false))))
+			));
 		return $this->_collection->find($query);
 	}
 

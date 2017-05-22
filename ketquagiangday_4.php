@@ -151,7 +151,7 @@ $danhsachlop->id_namhoc = $id_namhoc;
 					}
 				}
 				$danhsachlop->arr_lophoc = $arr_id_lop;
-				$danhsachlop_list = $danhsachlop->get_danh_sach_lop_theo_giaovien_tk($hocky);
+				$danhsachlop_list = $danhsachlop->get_danh_sach_lop_except_nghiluon_hocky($hocky);
 				$count_kem = 0; $count_yeu=0; $count_tb=0;$count_kha=0;$count_gioi=0;
 				$soluong = 0;$count_trentb=0;$count_duoitb=0;$count_tbmien=0;
 				if($danhsachlop_list){
