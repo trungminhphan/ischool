@@ -1,5 +1,5 @@
 <?php
-require_once('header.php');
+require_once('header_none.php');
 $danhsachlop = new DanhSachLop();$giaovien = new GiaoVien();
 $hocsinh = new HocSinh();$lophoc = new LopHoc();$monhoc = new MonHoc();
 $namhoc_list = $namhoc->get_list_limit(3);
@@ -11,58 +11,27 @@ if(isset($_GET['submit'])){
 	$id_monhoc = isset($_GET['id_monhoc']) ? $_GET['id_monhoc'] : '';
 }
 ?>
-<h1><a href="index.html" class="nav-button transform"><span></span></a>&nbsp;Kết quả giảng dạy theo Môn học</h1>
-<link rel="stylesheet" type="text/css" href="css/style.css">
-<script type="text/javascript" src="js/select2.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$(".select2").select2();
-		<?php if(isset($msg) && $msg) : ?>
-        	$.Notify({type: 'alert', caption: 'Thông báo', content: <?php echo "'".$msg."'"; ?>});
-    	<?php endif; ?>
-    	$(".open_window").click(function(){
-		  window.open($(this).attr("href"), '_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=0, left=100, width=1024, height=800');
-		  return false;
-		});
-	});
-</script>
-<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="GET" name="formthongkediembaithi">
-Năm học
-	<div class="input-control select">
-		<select name="id_namhoc" id="id_namhoc" class="select2">
-			<?php
-			foreach($namhoc_list as $nh){
-				echo '<option value="'.$nh['_id'].'" '.($nh['_id']==$id_namhoc ? ' selected' : '').'>'. $nh['tennamhoc'].'</option>';
-			}
-			?>
-		</select>
-	</div>
-	&nbsp;&nbsp;&nbsp;Học kỳ
-	<div class="input-control select">
-		<select name="hocky" id="hocky" class="select2">
-			<option value="hocky1" <?php echo $hocky=='hocky1' ? ' selected' : '';?>>Học kỳ I</option>
-			<option value="hocky2" <?php echo $hocky=='hocky2' ? ' selected' : '';?>>Học kỳ II</option>
-			<option value="canam" <?php echo $hocky=='canam'? ' selected':''; ?>>Cả năm</option>
-		</select>
-	</div>
-	&nbsp;&nbsp;&nbsp;Môn học
-	<div class="input-control select">
-		<select name="id_monhoc" id="id_monhoc" class="select2">
-			<?php
-			if($monhoc_list){
-				foreach ($monhoc_list as $mh) {
-					echo '<option value="'.$mh['_id'].'"'.($id_monhoc==$mh['_id'] ? ' selected':'').'>'.$mh['tenmonhoc'].'</option>';
-				}
-			}
-			?>
-		</select>
-	</div>
-	<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-search"></span> Xem kết quả</button>
-	<?php if(isset($_GET['submit'])): ?>
-		<a href="inketquagiangday_1.html?<?php echo $_SERVER['QUERY_STRING']; ?>" class="open_window button"><span class="mif-print"></span> In</a>
-	<?php endif; ?>
-</form>
-<hr />
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="Phần mềm quản Sổ liên lạc điện tử , Trường PT Thực hành Sư phạm.">
+<meta name="keywords" content="Phần mềm quản Sổ liên lạc điện tử , Trường PT Thực hành Sư phạm.">
+<meta name="author" content="Trung tâm Tin học Trường Đai học An Giang, 18 Ung Văn Khiêm, Tp Long Xuyên, An Giang">
+<link rel='shortcut icon' type='image/x-icon' href="images/favicon.ico" />
+<title>Phần mềm quản Sổ liên lạc điện tử, Trường PT Thực hành Sư phạm.</title>
+<link href="css/metro.css" rel="stylesheet">
+<link href="css/metro-icons.css" rel="stylesheet">
+<link href="css/metro-responsive.css" rel="stylesheet">
+<link href="css/metro-schemes.css" rel="stylesheet">
+<script src="js/jquery-2.1.3.min.js"></script>
+<script src="js/metro.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<script type="text/javascript"> $(document).ready(function(){ window.print(); }); </script>
+</head>
+<body>
 <?php if($id_namhoc && $hocky && $id_monhoc):
 $danhsachlop->id_namhoc = $id_namhoc;
 $giangday->id_monhoc = $id_monhoc;
@@ -71,6 +40,7 @@ $namhoc->id = $id_namhoc; $n = $namhoc->get_one();
 $monhoc->id = $id_monhoc; $m = $monhoc->get_one();
 $mamonhoc = $m['mamonhoc'];
 ?>
+<div style="margin:auto;">
 <div class="grid">
 	<div class="row cells12">
 		<div class="cell colspan12 align-center">
@@ -85,6 +55,7 @@ $mamonhoc = $m['mamonhoc'];
 		</h4>
 		</div>
 	</div>
+</div>
 </div>
 <?php if($mamonhoc == 'THEDUC' || $mamonhoc == 'AMNHAC' || $mamonhoc == 'MYTHUAT'): ?>
 <table border="1" cellpadding="5" id="bangdiem_1200" align="center">
@@ -113,18 +84,6 @@ $mamonhoc = $m['mamonhoc'];
 			<th rowspan="2" width="140">Giáo viên</th>
 			<th rowspan="2" width="50">Lớp</th>
 			<th rowspan="2" class="border_right">Sỉ số</th>
-			<?php
-			for($i=0; $i<10.5; $i=$i+0.5){
-				$j = $i + 0.5;
-				if($i==4.5){
-					echo '<th rowspan="2" class="border_right">'.$i.'<br /><' .$j .'</th>';
-				} else if($i ==10 ){
-					echo '<th rowspan="2" class="border_right">'.$i.'</th>';
-				} else {
-					echo '<th rowspan="2">'.$i.'<br /><' .$j .'</th>';
-				}
-			}
-			?>
 			<th colspan="2" class="border_right bg-yellow">KÉM</th>
 			<th colspan="2" class="border_right bg-yellow">YẾU</th>
 			<th colspan="2" class="border_right bg-yellow">TB</th>
@@ -450,27 +409,6 @@ $mamonhoc = $m['mamonhoc'];
 					echo '<td class="marks" style="text-align:left;">'.$gv['hoten'].'</td>';
 					echo '<td class="marks">'.$ko['tenlophoc'].'</td>';
 					echo '<td class="marks border_right">'.$siso.'</td>';
-					echo '<td class="marks">'.$count_0_05.'</td>';
-					echo '<td class="marks">'.$count_05_1.'</td>';
-					echo '<td class="marks">'.$count_1_15.'</td>';
-					echo '<td class="marks">'.$count_15_2.'</td>';
-					echo '<td class="marks">'.$count_2_25.'</td>';
-					echo '<td class="marks">'.$count_25_3.'</td>';
-					echo '<td class="marks">'.$count_3_35.'</td>';
-					echo '<td class="marks">'.$count_35_4.'</td>';
-					echo '<td class="marks">'.$count_4_45.'</td>';
-					echo '<td class="marks border_right">'.$count_45_5.'</td>';
-					echo '<td class="marks">'.$count_5_55.'</td>';
-					echo '<td class="marks">'.$count_55_6.'</td>';
-					echo '<td class="marks">'.$count_6_65.'</td>';
-					echo '<td class="marks">'.$count_65_7.'</td>';
-					echo '<td class="marks">'.$count_7_75.'</td>';
-					echo '<td class="marks">'.$count_75_8.'</td>';
-					echo '<td class="marks">'.$count_8_85.'</td>';
-					echo '<td class="marks">'.$count_85_9.'</td>';
-					echo '<td class="marks">'.$count_9_95.'</td>';
-					echo '<td class="marks">'.$count_95_10.'</td>';
-					echo '<td class="marks border_right">'.$count_10.'</td>';
 					$sum_hocluc = $count_kem + $count_yeu + $count_tb + $count_kha + $count_gioi;
 					echo '<td class="marks bg-yellow">'.$count_kem.'</td>';
 					echo '<td class="marks bg-yellow border_right">'.($sum_hocluc ? format_decimal($count_kem/$sum_hocluc*100,1) : '0').'%</td>';
@@ -523,27 +461,6 @@ $mamonhoc = $m['mamonhoc'];
 			echo '<tr class="bg-emerald fg-white">';
 			echo '<td colspan="3">Tổng kết khối '.$khoi.'</td>';
 			echo '<td class="marks border_right">'.$total_siso.'</td>';
-			echo '<td class="marks">'.$count_0_05_khoi.'</td>';
-			echo '<td class="marks">'.$count_05_1_khoi.'</td>';
-			echo '<td class="marks">'.$count_1_15_khoi.'</td>';
-			echo '<td class="marks">'.$count_15_2_khoi.'</td>';
-			echo '<td class="marks">'.$count_2_25_khoi.'</td>';
-			echo '<td class="marks">'.$count_25_3_khoi.'</td>';
-			echo '<td class="marks">'.$count_3_35_khoi.'</td>';
-			echo '<td class="marks">'.$count_35_4_khoi.'</td>';
-			echo '<td class="marks">'.$count_4_45_khoi.'</td>';
-			echo '<td class="marks border_right">'.$count_45_5_khoi.'</td>';
-			echo '<td class="marks">'.$count_5_55_khoi.'</td>';
-			echo '<td class="marks">'.$count_55_6_khoi.'</td>';
-			echo '<td class="marks">'.$count_6_65_khoi.'</td>';
-			echo '<td class="marks">'.$count_65_7_khoi.'</td>';
-			echo '<td class="marks">'.$count_7_75_khoi.'</td>';
-			echo '<td class="marks">'.$count_75_8_khoi.'</td>';
-			echo '<td class="marks">'.$count_8_85_khoi.'</td>';
-			echo '<td class="marks">'.$count_85_9_khoi.'</td>';
-			echo '<td class="marks">'.$count_9_95_khoi.'</td>';
-			echo '<td class="marks">'.$count_95_10_khoi.'</td>';
-			echo '<td class="marks border_right">'.$count_10_khoi.'</td>';
 			$sum_hocluc_khoi = $count_kem_khoi + $count_yeu_khoi + $count_tb_khoi + $count_kha_khoi + $count_gioi_khoi;
 			echo '<td class="marks">'.$count_kem_khoi.'</td>';
 			echo '<td class="marks border_right">'.($sum_hocluc_khoi ? format_decimal($count_kem_khoi/$sum_hocluc_khoi*100,1) : '0').'%</td>';
@@ -604,27 +521,6 @@ $mamonhoc = $m['mamonhoc'];
 	<tr class="bg-grayDarker fg-white">
 		<td colspan="3">Tổng kết THCS</td>
 		<td class="marks border_right"><?php echo $total_siso_thcs; ?></td>
-		<td class="marks"><?php echo $count_0_05_thcs; ?></td>
-		<td class="marks"><?php echo $count_05_1_thcs; ?></td>
-		<td class="marks"><?php echo $count_1_15_thcs; ?></td>
-		<td class="marks"><?php echo $count_15_2_thcs; ?></td>
-		<td class="marks"><?php echo $count_2_25_thcs; ?></td>
-		<td class="marks"><?php echo $count_25_3_thcs; ?></td>
-		<td class="marks"><?php echo $count_3_35_thcs; ?></td>
-		<td class="marks"><?php echo $count_35_4_thcs; ?></td>
-		<td class="marks"><?php echo $count_4_45_thcs; ?></td>
-		<td class="marks"><?php echo $count_45_5_thcs; ?></td>
-		<td class="marks"><?php echo $count_5_55_thcs; ?></td>
-		<td class="marks"><?php echo $count_55_6_thcs; ?></td>
-		<td class="marks"><?php echo $count_6_65_thcs; ?></td>
-		<td class="marks"><?php echo $count_65_7_thcs; ?></td>
-		<td class="marks"><?php echo $count_7_75_thcs; ?></td>
-		<td class="marks"><?php echo $count_75_8_thcs; ?></td>
-		<td class="marks"><?php echo $count_8_85_thcs; ?></td>
-		<td class="marks"><?php echo $count_85_9_thcs; ?></td>
-		<td class="marks"><?php echo $count_9_95_thcs; ?></td>
-		<td class="marks border_right"><?php echo $count_95_10_thcs; ?></td>
-		<td class="marks border_right"><?php echo $count_10_thcs; ?></td>
 		<?php
 		$sum_hocluc_thcs = $count_kem_thcs + $count_yeu_thcs + $count_tb_thcs + $count_kha_thcs + $count_gioi_thcs;
 		?>
@@ -649,5 +545,5 @@ $mamonhoc = $m['mamonhoc'];
 <?php else : ?>
 <h3><span class="mif-zoom-out"></span> Hãy chọn Năm học, Học kỳ và Môn học</h3>
 <?php endif; ?>
-<?php require_once('footer.php'); ?>
-
+</body>
+</html>
