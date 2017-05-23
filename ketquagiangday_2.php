@@ -151,7 +151,7 @@ $danhsachlop_list = $danhsachlop->get_danh_sach_lop_theo_khoi_tk($hocky);
 								if(isset($hk['diemmieng']) && $hk['diemmieng']){
 									foreach($hk['diemmieng'] as $key => $value){
 										if($value == 'M') $h == 'hocky1' ? $count_mien_1++ : $count_mien_2++;
-										else if($value == 'Đ') $h == 'hocky1' ? $count_d++;
+										else if($value == 'Đ') $h == 'hocky1' ? $count_d_1++ : $count_mien_2++;
 										else if($value == 'CĐ') $count_cd++;
 										$count_cotmieng++; $sum_cotmieng += doubleval($value);
 									}
