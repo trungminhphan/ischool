@@ -60,13 +60,13 @@ $mamonhoc = $m['mamonhoc'];
 <?php if($mamonhoc == 'THEDUC' || $mamonhoc == 'AMNHAC' || $mamonhoc == 'MYTHUAT'): ?>
 <table border="1" cellpadding="5" id="bangdiem_1200" align="center">
 <?php else: ?>
-<table border="1" cellpadding="5" id="bangdiem_1200" align="center" style="width:1920px;">
+<table border="1" cellpadding="5" id="bangdiem_1200" align="center" style="width:1200px;">
 <?php endif; ?>
 	<thead>
 	<?php if($mamonhoc == 'THEDUC' || $mamonhoc == 'AMNHAC' || $mamonhoc == 'MYTHUAT'): ?>
 		<tr>
 			<th rowspan="2">STT</th>
-			<th rowspan="2" width="140">Giáo viên</th>
+			<th rowspan="2" width="100">Giáo viên</th>
 			<th rowspan="2" width="50">Lớp</th>
 			<th rowspan="2" class="border_right">Sỉ số</th>
 			<th colspan="2">CHƯA ĐẠT</th>
@@ -81,7 +81,7 @@ $mamonhoc = $m['mamonhoc'];
 	<?php else : ?>
 		<tr>
 			<th rowspan="2">STT</th>
-			<th rowspan="2" width="140">Giáo viên</th>
+			<th rowspan="2" width="100">Giáo viên</th>
 			<th rowspan="2" width="50">Lớp</th>
 			<th rowspan="2" class="border_right">Sỉ số</th>
 			<th colspan="2" class="border_right bg-yellow">KÉM</th>
