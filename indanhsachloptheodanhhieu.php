@@ -534,11 +534,11 @@ $scores = sort_arr_desc($ranges_cn);
 		$hocky = 'hocky2';
 		if(isset($ds['danhgia_'.$hocky])){
 			$hanhkiem = isset($ds['danhgia_'.$hocky]['hanhkiem']) ? $ds['danhgia_'.$hocky]['hanhkiem'] : '';
-			if($ds['danhgia_'.$hocky]['hanhkiem'] == 'T') $count_hk_tot++;
-			else if($ds['danhgia_'.$hocky]['hanhkiem'] == 'K') $count_hk_kha++;
-			else if($ds['danhgia_'.$hocky]['hanhkiem'] == 'TB') $count_hk_tb++;
+			if($hanhkiem == 'T') $count_hk_tot++;
+			else if($hanhkiem  == 'K') $count_hk_kha++;
+			else if($hanhkiem  == 'TB') $count_hk_tb++;
 			else $count_hk_yeu++;
-			if($ds['danhgia_'.$hocky]['nghiluon'] == 1){
+			if(isset($ds['danhgia_'.$hocky]['nghiluon']) && $ds['danhgia_'.$hocky]['nghiluon'] == 1){
 				$nghiluon = '<img src="images/icon_yes.png" />'; $count_nghiluon++;
 			} else $nghiluon = '';
 		} else {

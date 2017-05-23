@@ -36,7 +36,6 @@ Năm học:
 		<select name="hocky" id="hocky" class="select2">
 			<option value="hocky1" <?php echo $hocky=='hocky1' ? ' selected' : '';?>>Học kỳ I</option>
 			<option value="hocky2" <?php echo $hocky=='hocky2' ? ' selected' : '';?>>Học kỳ II</option>
-			<option value="canam" <?php echo $hocky=='canam'? ' selected':''; ?>>Cả năm</option>
 		</select>
 	</div>
 	<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-search"></span> Xem kết quả</button>
