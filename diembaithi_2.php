@@ -69,7 +69,6 @@ $arr_lophoc = array();
 foreach ($list_khoi as $key => $value) {
 	array_push($arr_lophoc, new MongoId($value['_id']));
 }
-
 $danhsachlop->id_namhoc = $id_namhoc;
 $danhsachlop->arr_lophoc = $arr_lophoc;
 $danhsachlop_list = $danhsachlop->get_danh_sach_lop_theo_khoi_tk($hocky);

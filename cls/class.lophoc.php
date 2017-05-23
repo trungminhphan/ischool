@@ -26,7 +26,16 @@ class LopHoc{
 	}
 
 	public function get_list_to_khoi($khoi){
-		$query = array('malophoc' => new MongoRegex('/^'.$khoi.'/'));
+		if($khoi == 'THCS'){
+			$query = array('$or' => array(
+				array('malophoc' => new MongoRegex('/^6/')),
+				array('malophoc' => new MongoRegex('/^7/')),
+				array('malophoc' => new MongoRegex('/^8/')),
+				array('malophoc' => new MongoRegex('/^9/'))
+			));
+		} else {
+			$query = array('malophoc' => new MongoRegex('/^'.$khoi.'/'));
+		}
 		return $this->_collection->find($query)->sort(array('tenlophoc'=> -1));
 	}
 
