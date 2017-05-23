@@ -36,6 +36,7 @@ Năm học:
 		<select name="hocky" id="hocky" class="select2">
 			<option value="hocky1" <?php echo $hocky=='hocky1' ? ' selected' : '';?>>Học kỳ I</option>
 			<option value="hocky2" <?php echo $hocky=='hocky2' ? ' selected' : '';?>>Học kỳ II</option>
+			<option value="canam" <?php echo $hocky=='canam'? ' selected':''; ?>>Cả năm</option>
 		</select>
 	</div>
 	<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-search"></span> Xem kết quả</button>
@@ -52,7 +53,12 @@ $namhoc->id = $id_namhoc; $n = $namhoc->get_one();
 		<h3>THỐNG KÊ HỌC LỰC - HẠNH KIỂM</h3>
 		<h4>
 			<p>Năm học: <b><?php echo $n['tennamhoc']; ?></b>&nbsp;&nbsp;&nbsp;
-			Học kỳ: <b><?php echo $hocky=='hocky1' ? 'Học kỳ I' : 'Học kỳ II'; ?></b></p>
+			Học kỳ: <b><?php
+				if($hocky=='hocky1') echo 'Học kỳ I';
+				else if($hocky=='hocky2') echo 'Học kỳ II'; 
+				else echo 'Cả năm';
+				?>
+			</b></p>
 		</h4>
 		</div>
 	</div>
@@ -115,18 +121,30 @@ $namhoc->id = $id_namhoc; $n = $namhoc->get_one();
 				$count_hk_tot = 0; $count_hk_kha = 0;$count_hk_tb=0;$count_hk_yeu=0;
 				$count_hl_gioi = 0; $count_hl_kha = 0;$count_hl_tb=0;$count_hl_yeu=0;
 				$count_hl_kem=0;
-				$danhsachlop->id_lophoc = $ko['_id'];
+				$danhsachlop->id_lophoc = $ko['_id'];			
 				$danhsachlop_list = $danhsachlop->get_danh_sach_lop_hlhk($hocky);
 				$siso = $danhsachlop_list->count(); $total_siso += $siso;$total_siso_khoi+=$siso;
 				foreach ($danhsachlop_list as $ds) {
 					//Danh gia hoc sinh
-					if(isset($ds[$hocky]) && $ds[$hocky]){
-						if(isset($ds['danhgia_'.$hocky])){
-							$hanhkiem = isset($ds['danhgia_'.$hocky]['hanhkiem']) ? $ds['danhgia_'.$hocky]['hanhkiem'] : '';
-							if($hanhkiem == 'T') $count_hk_tot++;
-							else if($hanhkiem == 'K') $count_hk_kha++;
-							else if($hanhkiem == 'TB') $count_hk_tb++;
-							else if($hanhkiem == 'Yếu') $count_hk_yeu++;
+					if($hocky == 'canam'){
+						if(isset($ds['hocky2']) && $ds['hocky2']){
+							if(isset($ds['danhgia_hocky2'])){
+								$hanhkiem = isset($ds['danhgia_hocky2']['hanhkiem']) ? $ds['danhgia_hocky2']['hanhkiem'] : '';
+								if($hanhkiem == 'T') $count_hk_tot++;
+								else if($hanhkiem == 'K') $count_hk_kha++;
+								else if($hanhkiem == 'TB') $count_hk_tb++;
+								else if($hanhkiem == 'Yếu') $count_hk_yeu++;
+							}
+						}
+					} else {
+						if(isset($ds[$hocky]) && $ds[$hocky]){
+							if(isset($ds['danhgia_'.$hocky])){
+								$hanhkiem = isset($ds['danhgia_'.$hocky]['hanhkiem']) ? $ds['danhgia_'.$hocky]['hanhkiem'] : '';
+								if($hanhkiem == 'T') $count_hk_tot++;
+								else if($hanhkiem == 'K') $count_hk_kha++;
+								else if($hanhkiem == 'TB') $count_hk_tb++;
+								else if($hanhkiem == 'Yếu') $count_hk_yeu++;
+							}
 						}
 					}
 
@@ -139,91 +157,125 @@ $namhoc->id = $id_namhoc; $n = $namhoc->get_one();
 						$monhoc->id = $mmh['id_monhoc']; $mh=$monhoc->get_one(); $mamonhoc = $mh['mamonhoc'];
 						$danhsachlop->id_monhoc = $mh['_id']; $danhsachlop->id_hocsinh = $ds['id_hocsinh'];
 						$diem_m = 0; $diem_d=0; $diem_cd=0; $diem_thi_cd = '';
-						if(isset($ds[$hocky])){
-							foreach($ds[$hocky] as $hk){
-								if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
-									if($hk['id_monhoc'] == $mmh['id_monhoc']){
-										if(isset($hk['diemmieng']) && $hk['diemmieng']){
-											foreach($hk['diemmieng'] as $key => $value){
-												if($value == 'M') $diem_m++;
-												if($value=='Đ') $diem_d++;
-												if($value=='CĐ') $diem_cd++;
+						if($hocky == 'canam'){
+							$count_columns_1 = 0; $sum_total_1 = 0; $trungbinhmon_1 = '';
+							$count_columns_2 = 0; $sum_total_2 = 0; $trungbinhmon_2 = '';
+							$diem_m_1 = 0; $diem_d_1=0; $diem_cd_1=0; $diem_thi_cd_1 = '';
+							$diem_m_2 = 0; $diem_d_2=0; $diem_cd_2=0; $diem_thi_cd_2 = '';
+							foreach($arr_hocky as $h){
+								foreach($ds[$h] as $hk){
+									if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
+										if($hk['id_monhoc'] == $mmh['id_monhoc']){
+											if(isset($hk['diemmieng']) && $hk['diemmieng']){
+												foreach($hk['diemmieng'] as $key => $value){
+													if($value == 'M') $h=='hocky1' ? $diem_m_1++ : $diem_m_2++; 
+													if($value=='Đ') $h == 'hocky1' ? $diem_d_1++ : $diem_d_2++;
+													if($value=='CĐ') $h == 'hocky1' ? $diem_cd_1++ : $diem_cd_2++;
+												}
 											}
-										}
-										if(isset($hk['diem15phut']) && $hk['diem15phut']){
-											foreach($hk['diem15phut'] as $key => $value){
-												if($value == 'M') $diem_m++;
-												if($value=='Đ') $diem_d++;
-												if($value=='CĐ') $diem_cd++;
+											if(isset($hk['diem15phut']) && $hk['diem15phut']){
+												foreach($hk['diem15phut'] as $key => $value){
+													if($value == 'M') $h == 'hocky1' ? $diem_m_1++ : $diem_m_2++;
+													if($value=='Đ') $h == 'hocky1' ? $diem_d_1++ : $diem_d_2++;
+													if($value=='CĐ') $h == 'hocky1' ? $diem_cd_1++ : $diem_cd_2++;
+												}
 											}
-										}
-										if(isset($hk['diem1tiet']) && $hk['diem1tiet']){
-											foreach($hk['diem1tiet'] as $key => $value){
-												if($value == 'M') $diem_m++;
-												if($value=='Đ') $diem_d++;
-												if($value=='CĐ') $diem_cd++;
+											if(isset($hk['diem1tiet']) && $hk['diem1tiet']){
+												foreach($hk['diem1tiet'] as $key => $value){
+													if($value == 'M') $h == 'hocky1' ? $diem_m_1++ : $diem_m_1++;
+													if($value=='Đ') $h == 'hocky1' ? $diem_d_1++ : $diem_d_2++;
+													if($value=='CĐ') $h == 'hocky1' ? $diem_cd_1++ : $diem_cd_2++;
+												}
 											}
-										}
-										if(isset($hk['diemthi']) && $hk['diemthi']){
-											foreach($hk['diemthi'] as $key => $value){
-												if($value == 'M') $diem_m++;
-												if($value=='Đ') $diem_d++;
-												if($value=='CĐ') $diem_cd++;
-												$diem_thi_cd = $value;
-											}
-										}
-									}
-								} else {
-									if($hk['id_monhoc'] == $mmh['id_monhoc']){
-										if(isset($hk['diemmieng'])){
-											foreach($hk['diemmieng'] as $key => $value){
-												if(isset($value)) {
-													$sum_total += $value; $count_columns++;
+											if(isset($hk['diemthi']) && $hk['diemthi']){
+												foreach($hk['diemthi'] as $key => $value){
+													if($value == 'M') $h == 'hocky1' ? $diem_m_1++ : $diem_m_2++;
+													if($value=='Đ') $h == 'hocky1' ? $diem_d_1++ : $diem_d_2++;
+													if($value=='CĐ') $h == 'hocky1' ? $diem_cd_1++ : $diem_cd_2++;
+													if($h=='hocky1') $diem_thi_cd_1 = $value; else $diem_thi_cd_2 = $value;
 												}
 											}
 										}
-										if(isset($hk['diem15phut'])){
-											foreach($hk['diem15phut'] as $key => $value){
-												if(isset($value)){
-													$sum_total += $value; $count_columns++;	
+									} else {
+										if($hk['id_monhoc'] == $mmh['id_monhoc']){
+											if(isset($hk['diemmieng'])){
+												foreach($hk['diemmieng'] as $key => $value){
+													if(isset($value)) {
+														if($h=='hocky1'){
+															$sum_total_1 += $value; $count_columns_1++;
+														} else {
+															$sum_total_2 += $value; $count_columns_2++;
+														}
+													}
 												}
 											}
-										}
-										if(isset($hk['diem1tiet'])){
-											foreach($hk['diem1tiet'] as $key => $value){
-												if(isset($value)){
-													$sum_total += $value * 2; $count_columns += 2;	
+											if(isset($hk['diem15phut'])){
+												foreach($hk['diem15phut'] as $key => $value){
+													if(isset($value)){
+														if($h=='hocky1'){
+															$sum_total_1 += $value; $count_columns_1++;	
+														} else {
+															$sum_total_2 += $value; $count_columns_2++;	
+														}
+													}
 												}
 											}
-										}
-										if(isset($hk['diemthi'])){
-											foreach($hk['diemthi'] as $key => $value){
-												if(isset($value)){
-													$sum_total += $value * 3; $count_columns +=3;	
+											if(isset($hk['diem1tiet'])){
+												foreach($hk['diem1tiet'] as $key => $value){
+													if(isset($value)){
+														if($h == 'hocky1'){
+															$sum_total_1 += $value*2; $count_columns_1 += 2;	
+														} else {
+															$sum_total_2 += $value*2; $count_columns_2 += 2;	
+														}
+													}
+												}
+											}
+											if(isset($hk['diemthi'])){
+												foreach($hk['diemthi'] as $key => $value){
+													if(isset($value)){
+														if($h=='hocky1'){
+															$sum_total_1 += $value*3; $count_columns_1 +=3;	
+														} else {
+															$sum_total_2 += $value*3; $count_columns_2 +=3;	
+														}
+													}
 												}
 											}
 										}
 									}
 								}
 							}
-						}
-						
-						if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
-							//$diem_thi_cd == 'Đ'
-							if($diem_d > 0 && $diem_cd==0){
-								$trungbinhmon = 'Đ';
-							} else if($diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.65) {
-								$trungbinhmon = 'Đ';
-							} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
-								$trungbinhmon = 'M';
-							} else if($diem_cd > 0) {
-								$trungbinhmon = 'CĐ'; $trungbinh_cd++;
+							if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
+								if($khoi == 9 && ($mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT')){
+									if($diem_d_1 > 0 && $diem_cd_1==0){
+										$trungbinhmon = 'Đ';
+									} else if($diem_d_1 > 0 && round($diem_d_1/($diem_d_1 + $diem_cd_1), 2) >= 0.65) {
+										$trungbinhmon = 'Đ';
+									} else if($diem_m_1 > 0 && $diem_d_1==0 && $diem_cd_1==0){
+										$trungbinhmon = 'M';
+									} else if($diem_cd_1 > 0) {
+										$trungbinhmon = 'CĐ'; $trungbinh_cd++;
+									} else {
+										$trungbinhmon = '';
+									}
+								} else {
+									if($diem_d_2 > 0 && $diem_cd_2==0){
+										$trungbinhmon = 'Đ';
+									} else if($diem_d_2 > 0 && round($diem_d_2/($diem_d_2 + $diem_cd_2), 2) >= 0.65) {
+										$trungbinhmon = 'Đ';
+									} else if($diem_m_2 > 0 && $diem_d_2==0 && $diem_cd_2==0){
+										$trungbinhmon = 'M';
+									} else if($diem_cd_2 > 0) {
+										$trungbinhmon = 'CĐ'; $trungbinh_cd++;
+									} else {
+										$trungbinhmon = '';
+									}
+								}
 							} else {
-								$trungbinhmon = '';
-							}
-						} else {
-							if($sum_total && $count_columns){
-								$trungbinhmon = round($sum_total / $count_columns, 1);
+								$trungbinhmon_1 = $count_columns_1 ? round($sum_total_1 / $count_columns_1, 1) : 0;
+								$trungbinhmon_2 = $count_columns_2 ? round($sum_total_2 / $count_columns_2, 1) : 0;
+								$trungbinhmon += round((($trungbinhmon_1 + ($trungbinhmon_2*2))/3),1);
 								$sum_diem_hocsinh += $trungbinhmon; $count_diem_hocsinh++;
 								if($mamonhoc == 'TOAN') $diemtrungbinhtoan = $trungbinhmon;
 								if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan = $trungbinhmon;
@@ -231,21 +283,111 @@ $namhoc->id = $id_namhoc; $n = $namhoc->get_one();
 								if($trungbinhmon < 5 ) $trungbinhduoi5++;
 								if($trungbinhmon < 3.5) $trungbinhduoi35++;
 								if($trungbinhmon < 2) $trungbinhduoi2++;
-							} else {
-								$trungbinhmon = '';
 							}
-							if($trungbinhmon && $trungbinhmon < 3.5){
-								$class="fg-red bg-yellow bolds";
-							} else if($trungbinhmon && $trungbinhmon >= 3.5 && $trungbinhmon < 5){
-								$class="fg-red bolds";
-							} else { $class=''; }
-						}
-						if($sum_diem_hocsinh && $count_diem_hocsinh){
-							$diemtrungbinh = round($sum_diem_hocsinh / $count_diem_hocsinh, 1);
-							$diemxephang += $diemtrungbinh;
 						} else {
-							$diemtrungbinh = '';
+							if(isset($ds[$hocky])){
+								foreach($ds[$hocky] as $hk){
+									if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
+										if($hk['id_monhoc'] == $mmh['id_monhoc']){
+											if(isset($hk['diemmieng']) && $hk['diemmieng']){
+												foreach($hk['diemmieng'] as $key => $value){
+													if($value == 'M') $diem_m++;
+													if($value=='Đ') $diem_d++;
+													if($value=='CĐ') $diem_cd++;
+												}
+											}
+											if(isset($hk['diem15phut']) && $hk['diem15phut']){
+												foreach($hk['diem15phut'] as $key => $value){
+													if($value == 'M') $diem_m++;
+													if($value=='Đ') $diem_d++;
+													if($value=='CĐ') $diem_cd++;
+												}
+											}
+											if(isset($hk['diem1tiet']) && $hk['diem1tiet']){
+												foreach($hk['diem1tiet'] as $key => $value){
+													if($value == 'M') $diem_m++;
+													if($value=='Đ') $diem_d++;
+													if($value=='CĐ') $diem_cd++;
+												}
+											}
+											if(isset($hk['diemthi']) && $hk['diemthi']){
+												foreach($hk['diemthi'] as $key => $value){
+													if($value == 'M') $diem_m++;
+													if($value=='Đ') $diem_d++;
+													if($value=='CĐ') $diem_cd++;
+													$diem_thi_cd = $value;
+												}
+											}
+										}
+									} else {
+										if($hk['id_monhoc'] == $mmh['id_monhoc']){
+											if(isset($hk['diemmieng'])){
+												foreach($hk['diemmieng'] as $key => $value){
+													if(isset($value)) {
+														$sum_total += $value; $count_columns++;
+													}
+												}
+											}
+											if(isset($hk['diem15phut'])){
+												foreach($hk['diem15phut'] as $key => $value){
+													if(isset($value)){
+														$sum_total += $value; $count_columns++;	
+													}
+												}
+											}
+											if(isset($hk['diem1tiet'])){
+												foreach($hk['diem1tiet'] as $key => $value){
+													if(isset($value)){
+														$sum_total += $value * 2; $count_columns += 2;	
+													}
+												}
+											}
+											if(isset($hk['diemthi'])){
+												foreach($hk['diemthi'] as $key => $value){
+													if(isset($value)){
+														$sum_total += $value * 3; $count_columns +=3;	
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							if($mamonhoc=='THEDUC' || $mamonhoc=='AMNHAC' || $mamonhoc=='MYTHUAT'){
+								//$diem_thi_cd == 'Đ'
+								if($diem_d > 0 && $diem_cd==0){
+									$trungbinhmon = 'Đ';
+								} else if($diem_d > 0 && round($diem_d/($diem_d + $diem_cd), 2) >= 0.65) {
+									$trungbinhmon = 'Đ';
+								} else if($diem_m > 0 && $diem_d==0 && $diem_cd==0){
+									$trungbinhmon = 'M';
+								} else if($diem_cd > 0) {
+									$trungbinhmon = 'CĐ'; $trungbinh_cd++;
+								} else {
+									$trungbinhmon = '';
+								}
+							} else {
+								if($sum_total && $count_columns){
+									$trungbinhmon = round($sum_total / $count_columns, 1);
+									$sum_diem_hocsinh += $trungbinhmon; $count_diem_hocsinh++;
+									if($mamonhoc == 'TOAN') $diemtrungbinhtoan = $trungbinhmon;
+									if($mamonhoc == 'NGUVAN') $diemtrungbinhnguvan = $trungbinhmon;
+									if($trungbinhmon < 6.5) $trungbinhduoi65++;
+									if($trungbinhmon < 5 ) $trungbinhduoi5++;
+									if($trungbinhmon < 3.5) $trungbinhduoi35++;
+									if($trungbinhmon < 2) $trungbinhduoi2++;
+								} else {
+									$trungbinhmon = '';
+								}
+							}
 						}
+					}
+
+					if($sum_diem_hocsinh && $count_diem_hocsinh){
+						$diemtrungbinh = round($sum_diem_hocsinh / $count_diem_hocsinh, 1);
+						$diemxephang += $diemtrungbinh;
+					} else {
+						$diemtrungbinh = '';
 					}
 					//Xep loai hoc luc
 					if($diemtrungbinh >= 8 && ($diemtrungbinhtoan >=8 || $diemtrungbinhnguvan >=8) && $trungbinhduoi65==0 && $trungbinh_cd==0){
@@ -283,6 +425,7 @@ $namhoc->id = $id_namhoc; $n = $namhoc->get_one();
 					else if($hocluc == 'Yếu') $count_hl_yeu++;
 					else if($hocluc == 'Kém') $count_hl_kem++;
 				}
+
 				$sum_hk = $count_hk_tot + $count_hk_kha + $count_hk_tb + $count_hk_yeu;
 				$sum_hl = $count_hl_gioi + $count_hl_kha + $count_hl_tb + $count_hl_yeu + $count_hl_kem;
 				echo '<tr>';
@@ -385,8 +528,6 @@ $namhoc->id = $id_namhoc; $n = $namhoc->get_one();
 
 	</tfoot>
 </table>
-<?php else : ?>
-<h3><span class="mif-zoom-out"></span> Hãy chọn Năm học, Học kỳ</h3>
 <?php endif; ?>
 <?php require_once('footer.php'); ?>
 

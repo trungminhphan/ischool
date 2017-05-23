@@ -97,6 +97,7 @@ Năm học:
 	<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-checkmark"></span> Xem danh sách</button>
 	<?php if(isset($_GET['submit'])): ?>
 		<a href="indanhsachloptheodanhhieu.html?<?php echo $_SERVER['QUERY_STRING']; ?>" class="open_window button"><span class="mif-print"></span> In danh sách</a>
+		<a href="export_danhsachloptheodanhhieu.html?<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Xuất Excel</a>
 	<?php endif; ?>
 </div>
 </form>
