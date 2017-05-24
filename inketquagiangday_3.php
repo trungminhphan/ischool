@@ -63,7 +63,10 @@ $tcm = $tochuyenmon->get_one_by_giaovien();
 		<h3>THỐNG KÊ KẾT QUẢ GIẢNG DẠY THEO GIÁO VIÊN</h3>
 		<h4>
 			<p>Năm học: <b><?php echo $n['tennamhoc']; ?></b>&nbsp;&nbsp;&nbsp;
-			Học kỳ: <b><?php echo $hocky=='hocky1' ? 'Học kỳ I' : 'Học kỳ II'; ?></b>&nbsp;&nbsp;&nbsp;
+			Học kỳ: <b><?php
+				if($hocky=='hocky1') echo  'Học kỳ I';
+				else if($hocky == 'hocky2') echo 'Học kỳ II'; 
+				else echo 'Cả năm'; ?></b>&nbsp;&nbsp;&nbsp;
 			Giáo viên: <b><?php echo $gv['hoten']; ?></b>
 			</p>
 		</h4>
