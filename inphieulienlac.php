@@ -74,10 +74,10 @@ if(isset($_GET['submit'])){
 			$lophoc->id = $id_lophoc; $lh = $lophoc->get_one();
 			$namhoc->id = $id_namhoc; $nh = $namhoc->get_one();
 		?>
-		Kết quả học tập của: <b><font color="#ff0000"><?php echo $hs['hoten']; ?></font></b>&nbsp;&nbsp;&nbsp;
-		Lớp: <b><font color="#ff0000"><?php echo $lh['tenlophoc']; ?></font></b>&nbsp;&nbsp;&nbsp;
-		Ngày sinh: <b><font color="#ff0000"><?php echo $hs['ngaysinh']; ?></font></b>&nbsp;&nbsp;&nbsp;
-		Năm học: <b><font color="#ff0000"><?php echo $nh['tennamhoc']; ?></font></b>
+		Kết quả học tập của: <b><font color="#000000"><?php echo $hs['hoten']; ?></font></b>&nbsp;&nbsp;&nbsp;
+		Lớp: <b><font color="#000000"><?php echo $lh['tenlophoc']; ?></font></b>&nbsp;&nbsp;&nbsp;
+		Ngày sinh: <b><font color="#000000"><?php echo $hs['ngaysinh']; ?></font></b>&nbsp;&nbsp;&nbsp;
+		Năm học: <b><font color="#000000"><?php echo $nh['tennamhoc']; ?></font></b>
 		</td>
 	</tr>
 </table>

@@ -105,10 +105,10 @@ if(isset($phieulienlac_list) && $phieulienlac_list): ?>
 			$namhoc->id = $id_namhoc; $nh = $namhoc->get_one();
 		?>
 		<div style="font-size:15px;">
-		Kết quả học tập của: <b><font color="#ff0000"><?php echo $hs['hoten']; ?></font></b>&nbsp;&nbsp;&nbsp;
-		Lớp: <b><font color="#ff0000"><?php echo $lh['tenlophoc']; ?></font></b>&nbsp;&nbsp;&nbsp;
-		Ngày sinh: <b><font color="#ff0000"><?php echo $hs['ngaysinh']; ?></font></b>&nbsp;&nbsp;&nbsp;
-		Năm học: <b><font color="#ff0000"><?php echo $nh['tennamhoc']; ?></font></b></div>
+		Kết quả học tập của: <b><font color="#000000"><?php echo $hs['hoten']; ?></font></b>&nbsp;&nbsp;&nbsp;
+		Lớp: <b><font color="#000000"><?php echo $lh['tenlophoc']; ?></font></b>&nbsp;&nbsp;&nbsp;
+		Ngày sinh: <b><font color="#000000"><?php echo $hs['ngaysinh']; ?></font></b>&nbsp;&nbsp;&nbsp;
+		Năm học: <b><font color="#000000"><?php echo $nh['tennamhoc']; ?></font></b></div>
 		</td>
 	</tr>
 </table>

@@ -417,7 +417,14 @@ $scores = sort_arr_desc($ranges_cn);
 </tr>
 <?php
 	$i = 1;
-	foreach ($danhsachlop_list as $ds) {
+	$arr_hocsinh = iterator_to_array($danhsachlop_list);
+	foreach($danhsachlop_list as $k => $l){
+		$hocsinh->id = $l['id_hocsinh'];
+		$hs = $hocsinh->get_one();
+		$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+	}
+	$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
+	foreach ($arr_hocsinh as $ds) {
 		$sum_diem_hocsinh_hk1 = 0; $count_diem_hocsinh_hk1 = 0; $diemtrungbinh_hk1=0;
 		$sum_diem_hocsinh_hk2= 0; $count_diem_hocsinh_hk2 = 0; $diemtrungbinh_hk2=0;
 		$sum_diem_hocsinh = 0; $count_diem_hocsinh = 0; $diemtrungbinhtoan=0;$diemtrungbinhnguvan=0;

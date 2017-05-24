@@ -171,7 +171,6 @@ $danhsachlop->id_namhoc = $id_namhoc;
 								if(isset($ds[$h]) && $ds[$h]){
 									foreach($ds[$h] as $hk){
 										if($hk['id_monhoc'] == $mv){
-											//cot mieng hoc ky I
 											if(isset($hk['diemmieng']) && $hk['diemmieng']){
 												foreach($hk['diemmieng'] as $key => $value){
 													if($value == 'M') $h=='hocky1' ? $count_mien_1++ : $count_mien_2++;
