@@ -386,7 +386,7 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 			if($diemthi1 == ''){
 				$trungbinh1 = '';
 			} else {
-				if($count_d1/($count_d1 + $count_cd1) >=0.65){
+				if($count_d1 && $count_d1/($count_d1 + $count_cd1) >=0.65){
 					$trungbinh1 = 'Đ';
 				} else if($count_mien1 > 0  && $count_d1==0 && $count_cd1==0){
 					$trungbinh1 = 'M';
@@ -400,7 +400,7 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 			if($diemthi2 == ''){
 				$trungbinh2 = '';
 			} else {
-				if($count_d2/($count_d2 + $count_cd2) >=0.65){
+				if($count_d2 && $count_d2/($count_d2 + $count_cd2) >=0.65){
 					$trungbinh2 = 'Đ';
 				} else if($count_mien2 > 0  && $count_d2==0 && $count_cd2==0){
 					$trungbinh2 = 'M';
