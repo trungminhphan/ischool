@@ -830,9 +830,9 @@ if(isset($list_monhoc) && $list_monhoc){
 			<td align="center"><?php echo ($vang_khongphep_hk1 + $vang_khongphep_hk2) ? ($vang_khongphep_hk1 + $vang_khongphep_hk2) : ''; ?></td>
 		</tr>
 	</table>
-</div> <!-- page -->
+<!--</div>
 <div class="page-break"></div>
-<div class="page">
+<div class="page">-->
 <table  width="100%" border="1" cellpadding="20" id="bangdiem_1200" style="margin-top:3px;">
 	<tr style="height:100px;">
 		<td width="30%" style="vertical-align:top;">
