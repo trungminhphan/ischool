@@ -10,6 +10,7 @@ $id_hocsinh = isset($_GET['id_hocsinh']) ? $_GET['id_hocsinh'] : '';
 $lophoc_list = $lophoc->get_all_list();
 $namhoc_list = $namhoc->get_list_limit(3);
 $ranges_hk1=array();$ranges_hk2 = array();$ranges_cn = array();
+$arr_diemtrungbinhmonhoc = array();$arr_danhgiamonhoc = array();$ketqua = '';$songaynghi=0; $thilai = '';
 $scores_hk1=''; $scores_hk2='';$scores_cn='';
 $hocluc_hk1=''; $hocluc_hk2='';$hocluc_cn='';
 $hanhkiem_hk1='';$hanhkiem_hk2='';$hanhkiem_cn='';
@@ -168,7 +169,7 @@ if(isset($list_monhoc) && $list_monhoc){
 	foreach ($list_monhoc as $lmh) {
 		if($j%2==0) $class = 'eve'; else $class='odd';
 		$id_monhoc = $lmh['id_monhoc'];
-		$monhoc->id = $lmh['id_monhoc']; $mh=$monhoc->get_one(); $mamonhoc = $mh['mamonhoc'];
+		$monhoc->id = $lmh['id_monhoc']; $mh=$monhoc->get_one(); $mamonhoc = $mh['mamonhoc'];$tenmonhoc = $mh['tenmonhoc'];
 		if($mamonhoc != 'THEDUC' && $mamonhoc !='AMNHAC' && $mamonhoc != 'MYTHUAT'){
 			echo '<tr class="'.$class.'">';
 			echo '<td align="center">'.$j.'</td>';
@@ -351,6 +352,7 @@ if(isset($list_monhoc) && $list_monhoc){
 					echo '<td class="marks">'.(($trungbinh1 && is_numeric($trungbinh1)) ? format_decimal($trungbinh1,1) : $trungbinh1).'</td>';
 					echo '<td class="marks">'.(($trungbinh2 && is_numeric($trungbinh2)) ? format_decimal($trungbinh2,1) : $trungbinh2).'</td>';
 					echo '<td class="marks">'.(($canam && is_numeric($canam)) ? format_decimal($canam,1) : $canam).'</td>';
+					$arr_diemtrungbinhmonhoc[$tenmonhoc] = $canam;
 				}
 			echo '</tr>';
 			$j++;
@@ -386,7 +388,7 @@ if(isset($list_monhoc) && $list_monhoc){
 		$diem_m_hk2 = 0; $diem_d_hk2=0; $diem_cd_hk2=0; $diem_thi_cd_hk2 = '';
 		if($j%2==0) $class = 'eve'; else $class='odd';
 		$id_monhoc = $lmh['id_monhoc'];
-		$monhoc->id = $lmh['id_monhoc']; $mh=$monhoc->get_one(); $mamonhoc = $mh['mamonhoc'];
+		$monhoc->id = $lmh['id_monhoc']; $mh=$monhoc->get_one(); $mamonhoc = $mh['mamonhoc'];$tenmonhoc = $mh['tenmonhoc'];
 		if($mamonhoc == 'THEDUC' || $mamonhoc ==='AMNHAC' || $mamonhoc == 'MYTHUAT'){
 			echo '<tr class="'.$class.'">';
 			echo '<td align="center">'.$j.'</td>';
@@ -563,6 +565,7 @@ if(isset($list_monhoc) && $list_monhoc){
 					echo '<td class="marks">'.(($trungbinh1 && is_numeric($trungbinh1)) ? format_decimal($trungbinh1,1) : $trungbinh1).'</td>';
 					echo '<td class="marks">'.(($trungbinh2 && is_numeric($trungbinh2)) ? format_decimal($trungbinh2,1) : $trungbinh2).'</td>';
 					echo '<td class="marks">'.(($canam && is_numeric($canam)) ? format_decimal($canam,1) : $canam).'</td>';
+					$arr_danhgiamonhoc[$tenmonhoc] = $canam;
 				}
 			echo '</tr>';
 			$j++;
@@ -857,9 +860,42 @@ if(isset($list_monhoc) && $list_monhoc){
 			</div>
 		</td>
 		<td width="39%" style="vertical-align:top;">
+		<?php
+		$songaynghi = $vang_cophep_hk1 + $vang_khongphep_hk1 + $vang_cophep_hk2 + $vang_khongphep_hk2;
+		if($hocluc_cn == ''){
+			$ketqua = '';
+		} else if($hocluc_cn == 'Kém' || $songaynghi > 45 || ($hocluc_cn == 'Yếu' && $hanhkiem_cn == 'Kém')){
+			$ketqua = 'Ở lại';
+		} else if($hocluc_cn == 'Yếu'){
+			$ketqua = 'Thi lại';
+		} else if($hanhkiem_cn == 'Yếu' && $hocluc_cn != 'Yếu' && $hocluc_cn != 'Kém'){
+			$ketqua = 'Rèn hè';
+		} else {
+			$ketqua = 'Được lên lớp';
+		}
+		?>
 			<center><b>KẾT QUẢ CUỐI NĂM</b></center>
-			<p>Được lên lớp: ........................................................................................</p>
-			<p>Thi lại môn: ..........................................................................................</p>
+			<p>Kết quả học tập: <b><?php echo $ketqua; ?></b></p>
+			<p>Thi lại môn: 
+
+			<?php
+			if($hocluc_cn == 'Yếu'){
+				$arr_thilai = array();
+				foreach($arr_diemtrungbinhmonhoc as $key => $value){
+					if($value < 5){
+						$arr_thilai[] = $key;
+
+					}
+				}
+				foreach($arr_danhgiamonhoc as $key => $value){
+					if($value == 'CĐ'){
+						$arr_thilai[] = $key;
+					}
+				}
+				echo '<b>'. implode(", ", $arr_thilai) . '</b>';
+			}
+			?>
+			</p>
 		</td>
 	</tr>
 	<tr style="height:100px;">
