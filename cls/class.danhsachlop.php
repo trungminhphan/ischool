@@ -19,7 +19,7 @@ class DanhSachLop{
 		$this->_mongo = DBConnect::init();
 		$this->_collection = $this->_mongo->getCollection(DanhSachLop::COLLECTION);
 	}
-	
+
 	public function get_list($condition){
 		if($condition) return $this->_collection->find($condition);
 		else return $this->_collection->find();
@@ -40,7 +40,7 @@ class DanhSachLop{
 				'id_lophoc'=> new MongoId($this->id_lophoc),
 				'id_namhoc'=> new MongoId($this->id_namhoc),
 				'danhgia_'.$hocky.'.nghiluon' => 0);
-		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));	
+		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));
 	}
 	public function get_danh_sach_lop_except_nghiluon(){
 		$query = array('$and' => array(
@@ -85,7 +85,7 @@ class DanhSachLop{
 				array('id_namhoc'=> new MongoId($this->id_namhoc)),
 				array('$or' => array(array('danhgia_'.$hocky.'.nghiluon' => 0), array('danhgia_'.$hocky.'.nghiluon' => array('$exists' => false))))));
 		}
-	
+
 		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));
 	}
 
@@ -96,13 +96,13 @@ class DanhSachLop{
 
 	public function get_danh_sach_lop_theo_giaovien_tk($hocky){
 		$query = array('id_lophoc'=> array('$in' => $this->arr_lophoc),'id_namhoc'=> new MongoId($this->id_namhoc), 'danhgia_'.$hocky.'.nghiluon' => 0);
-		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));	
+		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));
 	}
 
 	public function get_id_hocsinh(){
 		$query = array('$and'=>array(array('id_lophoc'=> new MongoId($this->id_lophoc)), array('id_namhoc'=> new MongoId($this->id_namhoc))));
 		$fields = array('_id'=>true, 'id_hocsinh' => true);
-		return $this->_collection->find($query, $fields)->sort(array('id_hocsinh'=>1));	
+		return $this->_collection->find($query, $fields)->sort(array('id_hocsinh'=>1));
 	}
 
 	public function get_hocsinh_lophoc(){
@@ -158,12 +158,12 @@ class DanhSachLop{
 	}
 
 	public function delete_diem($condition, $query){
-		return $this->_collection->update($condition, $query);	
+		return $this->_collection->update($condition, $query);
 	}
 
 	public function insert_list(){
 		$query = array(
-				'id_hocsinh'=> new MongoId($this->id_hocsinh), 
+				'id_hocsinh'=> new MongoId($this->id_hocsinh),
 				'id_lophoc'=> new MongoId($this->id_lophoc),
 				'id_namhoc'=> new MongoId($this->id_namhoc),
 				'date_post' => new MongoDate());
@@ -188,12 +188,12 @@ class DanhSachLop{
 		$fields = array('_id'=>true);
 		$result = $this->_collection->findOne($query, $fields);
 		if($result['_id']) return true;
-		else return false;	
+		else return false;
 	}
 
 	public function check_exist_hk($hk){
 		$condition = array(
-				'id_hocsinh'=> new MongoId($this->id_hocsinh), 
+				'id_hocsinh'=> new MongoId($this->id_hocsinh),
 				'id_lophoc'=> new MongoId($this->id_lophoc),
 				'id_namhoc'=> new MongoId($this->id_namhoc));
 		$result = $this->_collection->findOne($condition);
@@ -210,7 +210,7 @@ class DanhSachLop{
 	}
 
 	public function check_exist_monhoc($hk){
-		$query = array('id_hocsinh'=> new MongoId($this->id_hocsinh), 
+		$query = array('id_hocsinh'=> new MongoId($this->id_hocsinh),
 			'id_lophoc'=> new MongoId($this->id_lophoc),
 			'id_namhoc'=> new MongoId($this->id_namhoc),
 			$hk . '.id_monhoc' => new MongoId($this->id_monhoc));
@@ -227,7 +227,7 @@ class DanhSachLop{
 
 	public function check_exist_hk1_monhoc(){
 		$condition = array(
-			'id_hocsinh'=> new MongoId($this->id_hocsinh), 
+			'id_hocsinh'=> new MongoId($this->id_hocsinh),
 			'id_lophoc'=> new MongoId($this->id_lophoc),
 			'id_namhoc'=> new MongoId($this->id_namhoc),
 			'hocky1.id_monhoc' => new MongoId($this->id_monhoc));
@@ -239,7 +239,7 @@ class DanhSachLop{
 
 	public function check_exist_hk2_monhoc(){
 		$condition = array(
-			'id_hocsinh'=> new MongoId($this->id_hocsinh), 
+			'id_hocsinh'=> new MongoId($this->id_hocsinh),
 			'id_lophoc'=> new MongoId($this->id_lophoc),
 			'id_namhoc'=> new MongoId($this->id_namhoc),
 			'hocky2.id_monhoc'=> new MongoId($this->id_monhoc));
@@ -277,7 +277,7 @@ class DanhSachLop{
 		$fields = array('_id'=> true);
 		$result = $this->_collection->findOne($query, $fields);
 		if($result['_id']) return true;
-		else return false;	
+		else return false;
 	}
 
 	public function push_ykien($query){
@@ -290,14 +290,14 @@ class DanhSachLop{
 		//ykienphhs, ykiengvcn
 		$condition = array('_id' => new MongoId($this->id));
 		return $this->_collection->update($condition, $query);
-	}	
+	}
 
 	/*public function check_exist_monhoc(){
 		$query = array('$or'=> array(array('hocky1.id_monhoc'=> new MongoId($this->id_monhoc)), array('hocky2.id_monhoc'=> new MongoId($this->id_monhoc))));
 		$fields = array('_id'=> true);
 		$result = $this->_collection->findOne($query, $fields);
 		if($result['_id']) return true;
-		else return false;		
+		else return false;
 	}*/
 
 	public function check_exist_giangday(){
@@ -306,7 +306,12 @@ class DanhSachLop{
 		$fields = array('_id' => true);
 		$result = $this->_collection->findOne($query, $fields);
 		if($result['_id']) return true;
-		else return false;		
+		else return false;
+	}
+
+	public function delete_by_id_hocsinh(){
+		$query = array('id_namhoc' => new MongoId($this->id_namhoc), 'id_hocsinh' => new MongoId($this->id_hocsinh));
+		return $this->_collection->remove($query);
 	}
 }
 ?>

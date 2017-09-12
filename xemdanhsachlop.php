@@ -95,7 +95,6 @@ if(isset($_GET['submit']) && $id_namhoc && $id_lophoc){
 		//$arr_hocsinh[$k]['ten'] = $hs['ten'];
 	}
 	$arr_hocsinh = sort_danhsach($arr_hocsinh);
-
 	foreach($arr_hocsinh as $ds){
 		//$ds['id_hocsinh'];
 		$a = explode('---', $ds); $id_hocsinh = end($a);

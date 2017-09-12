@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once('header.php');
 check_permis(!$users->is_admin());
 $namhoc_list = $namhoc->get_all_list();
@@ -28,7 +28,7 @@ $id_namhoc = ''; $id_lophoc='';
 		<div class="cell colspan2 input-control select">
 			<select name="id_lophoc" id="id_lophoc" class="select2">
 			<?php
-				
+
 				if($lophoc_list){
 					foreach($lophoc_list as $lh){
 						echo '<option value="'.$lh['_id'].'">'.$lh['tenlophoc'].'</option>';
@@ -88,25 +88,25 @@ if(isset($_POST['submit'])){
 							<th>Họ tên</th>
 							<th>Ngày sinh</th>
 							<th>Giới tính</th>
-							<th>Nơi sinh</th>	
-							<th>Quốc tịch</th>	
+							<th>Nơi sinh</th>
+							<th>Quốc tịch</th>
 							<th>Dân tộc</th>
 							<th>Tôn giáo</th>
 							<th>Quê quán</th>
 							<th>Hộ khẩu thường trú</th>
 							<th>Nơi ở hiện nay</th>
-							<th>Ngày vào Đoàn</th>	
-							<th>Ngày vào Đảng</th>	
-							<th>Điện thoại</th>	
-							<th>Email</th>	
-							<th>Họ tên Cha</th>	
+							<th>Ngày vào Đoàn</th>
+							<th>Ngày vào Đảng</th>
+							<th>Điện thoại</th>
+							<th>Email</th>
+							<th>Họ tên Cha</th>
 							<th>Năm sinh cha</th>
 							<th>Nghề nghiệp Cha</th>
 							<th>Đơn vị công tác cha</th>
 							<th>Họ tên mẹ</th>
 							<th>Năm sinh mẹ</th>
 							<th>Nghề nghiệp mẹ</th>
-							<th>Đơn vị công tác mẹ</th>	
+							<th>Đơn vị công tác mẹ</th>
 							<th>Khen thưởng</th>
 							<th>Kỷ luật</th>
 							<th>Ghi chú</th>
@@ -117,25 +117,26 @@ if(isset($_POST['submit'])){
 						if($key >= 2 && $value['B'] && $value['D']) {
 							$hinhanh = $value['A'];	$masohocsinh = $value['B'];
 							$cmnd = $value['C']; $hoten = $value['D'];
-							$ngaysinh = $value['E'];$gioitinh = $value['F'];
-							$noisinh = $value['G']; $quoctich = $value['H'];
-							$dantoc = $value['I']; $tongiao = $value['J'];
-							$quequan = $value['K']; $hokhauthuongtru = $value['L'];
-							$noiohiennay = $value['M']; $ngayvaodoan = $value['N'];
-							$ngayvaodang = $value['O']; $dienthoai = $value['P'];
-							$email = $value['Q']; $hotencha = $value['R'];
-							$namsinhcha = $value['S']; $nghenghiepcha = $value['T'];
-							$donvicongtaccha = $value['U']; $hotenme = $value['V'];
-							$namsinhme = $value['W']; $nghenghiepme = $value['X'];
-							$donvicongtacme = $value['Y']; $khenthuong = $value['Z'];
-							$kyluat = $value['AA']; $ghichu = $value['AB'];	$totnghiep = $value['AC'];
-
+							$ngaysinh = $value['E'];$gioitinh = $value['G'];
+							$noisinh = $value['F']; $quoctich = $value['J'];
+							$dantoc = $value['H']; $tongiao = $value['K'];
+							$quequan = $value['L']; $hokhauthuongtru = $value['M'];
+							$noiohiennay = $value['N']; $ngayvaodoan = $value['O'];
+							$ngayvaodang = $value['P']; $dienthoai = $value['Q'];
+							$email = $value['R']; $hotencha = $value['S'];
+							$namsinhcha = $value['T']; $nghenghiepcha = $value['U'];
+							$donvicongtaccha = $value['V']; $hotenme = $value['W'];
+							$namsinhme = $value['X']; $nghenghiepme = $value['Y'];
+							$donvicongtacme = $value['Z']; $khenthuong = $value['AA'];
+							$kyluat = $value['AB']; $ghichu = $value['I'];	$totnghiep = $value['AC'];
+							$a = explode(' ', $hoten);$ten = end($a);
 							$id_hocsinh = new MongoId();
 							$hocsinh->id = $id_hocsinh;
 							$hocsinh->hinhanh = $hinhanh;
 							$hocsinh->masohocsinh = $masohocsinh;
 							$hocsinh->cmnd = $cmnd;
 							$hocsinh->hoten = $hoten;
+							$hocsinh->ten = $ten;
 							$hocsinh->ngaysinh = $ngaysinh;
 							$hocsinh->gioitinh = $gioitinh;
 							$hocsinh->noisinh = $noisinh;
@@ -207,7 +208,7 @@ if(isset($_POST['submit'])){
 				}
 				echo '</table>';
 				$msg = 'Import thành công...';
-			}		
+			}
 		} else {
 			$msg = 'Tập tin không hợp lệ...';
 		}

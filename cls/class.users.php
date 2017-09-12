@@ -7,7 +7,7 @@ class Users{
 	public $id_hocsinh = '';
 	public $id_giaovien = '';
 	public $roles = 0;
-	
+
 	private $_mongo;
 	private $_collection;
 	private $_user;
@@ -23,7 +23,7 @@ class Users{
 	}
 
 	public function get_list_50(){
-		return $this->_collection->find()->limit(50);	
+		return $this->_collection->find()->limit(50);
 	}
 
 	public function get_one(){
@@ -81,7 +81,7 @@ class Users{
 
 	public function is_teacher(){
 		return ($_SESSION['roles'] & TEACHER);
-	}	
+	}
 
 	public function is_student(){
 		return ($_SESSION['roles'] & STUDENT);
@@ -114,6 +114,11 @@ class Users{
 		unset($_SESSION['user_id']);
 	}
 
+	public function delete_by_id_hocsinh(){
+		$query = array('id_hocsinh' => new MongoId($this->id_hocsinh));
+		return $this->_collection->remove($query);
+	}
+
 
 
 	/*public function __get($attr){
@@ -124,7 +129,7 @@ class Users{
 				$address = $this->_user['address'];
 				return sprintf('Town: %s, Planet: %s', $address['town'], $address['planet']);
 			case 'town':
-				return $this->_user['address']['town']; 
+				return $this->_user['address']['town'];
 			case 'planet':
 				return $this->_user['address']['planet'];
 			case 'password':
