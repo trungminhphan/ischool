@@ -9,7 +9,7 @@ $id_lophoc = isset($_GET['id_lophoc']) ? $_GET['id_lophoc'] : '';
 $id_namhoc = isset($_GET['id_namhoc']) ? $_GET['id_namhoc'] : '';
 //$lophoc_list = $lophoc->get_all_list();
 $namhoc_list = $namhoc->get_list_limit(3);
- 
+
 if(isset($_GET['submit']) && $id_namhoc && $id_lophoc){
 	$danhsachlop->id_lophoc = $id_lophoc;
 	$danhsachlop->id_namhoc = $id_namhoc;
@@ -86,28 +86,32 @@ if(isset($_GET['submit']) && $id_namhoc && $id_lophoc){
 <tbody>
 <?php
 	$i = 1;
-	$arr_hocsinh = iterator_to_array($danhsachlop_list);
+	$arr_hocsinh = array();
 	foreach($danhsachlop_list as $k => $l){
 		$hocsinh->id = $l['id_hocsinh'];
 		$hs = $hocsinh->get_one();
-		$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+		$arr_hocsinh[] = $hs['ten'] . '---'. strval($l['_id']) . '---'.strval($l['id_hocsinh']);
+		//$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+		//$arr_hocsinh[$k]['ten'] = $hs['ten'];
 	}
-	$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
+	$arr_hocsinh = sort_danhsach($arr_hocsinh);
+
 	foreach($arr_hocsinh as $ds){
-		$hocsinh->id = $ds['id_hocsinh'];
-		$hs = $hocsinh->get_one();
+		//$ds['id_hocsinh'];
+		$a = explode('---', $ds); $id_hocsinh = end($a);
+		$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one();
 		echo '<tr>';
 		echo '<td align="center">'.$i.'</td>';
-		echo '<td align="center"><a href="chitiethocsinh.html?id='.$ds['id_hocsinh'].'&id_lophoc='.$id_lophoc.'&id_namhoc='.$id_namhoc.'">'.$hs['masohocsinh'].'</a></td>';
+		echo '<td align="center"><a href="chitiethocsinh.html?id='.$id_hocsinh.'&id_lophoc='.$id_lophoc.'&id_namhoc='.$id_namhoc.'">'.$hs['masohocsinh'].'</a></td>';
 		//echo '<td align="center">'.$hs['cmnd'].'</td>';
 		echo '<td>'.$hs['hoten'].'</td>';
 		echo '<td align="center">'.$hs['ngaysinh'].'</td>';
 		echo '<td align="center">'.$hs['noisinh'].'</td>';
 		echo '<td align="center">'.$hs['gioitinh'].'</td>';
 		echo '<td align="center">'.$hs['dantoc'].'</td>';
-		echo '<td align="center"><a href="chitiethocsinh.html?id='.$ds['id_hocsinh'].'&id_lophoc='.$id_lophoc.'&id_namhoc='.$id_namhoc.'" target="_blank"><span class="mif-profile"></span></a></td>';
+		echo '<td align="center"><a href="chitiethocsinh.html?id='.$id_hocsinh.'&id_lophoc='.$id_lophoc.'&id_namhoc='.$id_namhoc.'" target="_blank"><span class="mif-profile"></span></a></td>';
 		if($users->is_admin()){
-			echo '<td align="center"><a href="xoadanhsachlop.html?id_danhsachlop='.$ds['_id'].'&id_namhoc='.$id_namhoc.'&id_lophoc='.$id_lophoc.'" Onclick="return confirm(\'Chắc chắn xoá?\')"><span class="mif-bin"></span></a></td>';
+			echo '<td align="center"><a href="xoadanhsachlop.html?id_danhsachlop='.$a[1].'&id_namhoc='.$id_namhoc.'&id_lophoc='.$id_lophoc.'" Onclick="return confirm(\'Chắc chắn xoá?\')"><span class="mif-bin"></span></a></td>';
 		}
 		echo '</tr>';
 		$i++;

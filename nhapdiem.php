@@ -23,7 +23,7 @@ if(isset($_GET['loaddanhsachnhapdiem']) && $_GET['loaddanhsachnhapdiem']=='OK'){
 		//Kiem tra xem co phai Giao vien giang day hay khong?
 		if($giangday->check_giang_day()){
 			$danhsachlop->id_lophoc = $id_lophoc; $danhsachlop->id_namhoc = $id_namhoc; $danhsachlop->id_monhoc = $id_monhoc;
-			//load danh sach lop...	
+			//load danh sach lop...
 			$danhsachlop_list = $danhsachlop->get_danh_sach_lop();
 			//echo '<div class="messages">OK</div>';
 		} else {
@@ -35,8 +35,9 @@ $monhoc_list = $monhoc->get_all_list();
 $lophoc_list = $lophoc->get_all_list();
 $namhoc_list = $namhoc->get_list_limit(3);
 $giangday->id_giaovien = $users->get_id_giaovien();
-$phanconggiangday = $giangday->get_giangday();
-$list_monday = $giangday->get_monday();
+$giangday->id_namhoc = $namhoc_macdinh['_id'];
+$phanconggiangday = $giangday->get_giangday_theonam();
+$list_monday = $giangday->get_monday_theonam();
 ?>
 <link rel="stylesheet" href="css/style.css">
 <script type="text/javascript" src="js/select2.min.js"></script>
@@ -86,7 +87,7 @@ $list_monday = $giangday->get_monday();
 				}
 			?>
 			</select>
-		</div>		
+		</div>
 	</div>
 	<div class="row cells12">
 		<div class="cell colspan12 align-center">
@@ -95,22 +96,20 @@ $list_monday = $giangday->get_monday();
 				echo '<a href="export_bangdiem.html?id_lophoc='.$id_lophoc.'&id_namhoc='.$id_namhoc.'&id_monhoc='.$id_monhoc.'&hocky='.$hocky.'" class="button success" ><span class="mif-file-excel"></span> Xuất file Excel</a>';
 			}
 			?>
-			
+
 		</div>
 	</div>
 </div>
 </form>
 
-<?php if(isset($_GET['loaddanhsachnhapdiem']) && !empty($danhsachlop_list)) : 
+<?php if(isset($_GET['loaddanhsachnhapdiem']) && !empty($danhsachlop_list)) :
 $monhoc->id = $id_monhoc; $lophoc->id=$id_lophoc; $namhoc->id = $id_namhoc;
 $mh_title = $monhoc->get_one();$lop_title = $lophoc->get_one();$nh_title = $namhoc->get_one();
 $mamonhoc = $mh_title['mamonhoc'];
 $giangday->id_lophoc = $id_lophoc; $giangday->id_namhoc = $id_namhoc; $giangday->id_monhoc = $id_monhoc;
 $id_gvbm = $giangday->get_id_giaovien();
 $giaovien->id = $id_gvbm; $gvbm = $giaovien->get_one();
-
 ?>
-
 <h3 class="align-center fg-red">NHẬP BẢNG ĐIỂM TRỰC TUYẾN</h3>
 <div class="grid" style="max-width:960px;margin:auto;">
 	<div class="row cells12">
@@ -161,20 +160,23 @@ $giaovien->id = $id_gvbm; $gvbm = $giaovien->get_one();
 </thead>
 <tbody>
 	<?php
-	$arr_hocsinh = iterator_to_array($danhsachlop_list);
+	$arr_hocsinh = array();
 	foreach($danhsachlop_list as $k => $l){
 		$hocsinh->id = $l['id_hocsinh'];
 		$hs = $hocsinh->get_one();
-		$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+		$arr_hocsinh[] = $hs['ten'] . '---'. strval($l['_id']) . '---'.strval($l['id_hocsinh']);
+		//$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+		//$arr_hocsinh[$k]['ten'] = $hs['ten'];
 	}
-	$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
+	$arr_hocsinh = sort_danhsach($arr_hocsinh);
 	$r = 1; $tabindex=0;
 	foreach($arr_hocsinh as $dsl){
-		$hocsinh->id = $dsl['id_hocsinh'];
+		$a = explode('---', $dsl); $id_hocsinh = end($a);
+		$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one();
 		$hs = $hocsinh->get_one();
 		if($r%2==0) $class='eve'; else $class = 'odd';
 		if($r%5==0) $line='sp'; else $line='';
-		echo '<input type="hidden" name="id_hocsinh[]" value="'.$dsl['id_hocsinh'].'">';
+		echo '<input type="hidden" name="id_hocsinh[]" value="'.$id_hocsinh.'">';
 		echo '<tr class="'.$class. ' '.$line.'">';
 		echo '<td align="center">'.$r.'</td>';
 		echo '<td align="center">'.$hs['masohocsinh'].'</td>';
@@ -218,7 +220,7 @@ $giaovien->id = $id_gvbm; $gvbm = $giaovien->get_one();
 			for($cell=0; $cell<15; $cell++){
 				if($cell==2 || $cell==7 || $cell == 13 || $cell == 14) $class= 'border-right';
 				else $class='';
-				echo '<td class="marks '.$class.'"><input type="text" name="'.$dsl['id_hocsinh'].'_diem[]" class="marks" value="" tabindex='.$tabindex.'></td>'; $tabindex++;
+				echo '<td class="marks '.$class.'"><input type="text" name="'.$id_hocsinh.'_diem[]" class="marks" value="" tabindex='.$tabindex.'></td>'; $tabindex++;
 			}
 		}
 		echo '</tr>';

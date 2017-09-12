@@ -22,7 +22,7 @@ require_once('cls/PHPExcel.php');
 if($mamonhoc == 'AMNHAC' || $mamonhoc == 'MYTHUAT' || $mamonhoc == 'THEDUC'){
 	$inputFileName = 'downloads/mau_bang_diem_danh_gia.xls';
 } else {
-	$inputFileName = 'downloads/mau_bang_diem.xls';	
+	$inputFileName = 'downloads/mau_bang_diem.xls';
 }
 
 $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
@@ -34,7 +34,7 @@ $objPHPExcel->getProperties()->setCreator("Phan Minh Trung")
 							 ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
 							 ->setKeywords("office 2007 openxml php")
 							 ->setCategory("Bieu mau nhap diem");
-							 
+
 $objPHPExcel->setActiveSheetIndex(0);
 $objPHPExcel->setActiveSheetIndex()->setCellValue('B3', $tenlophoc);
 $objPHPExcel->setActiveSheetIndex()->setCellValue('B4', $siso);
@@ -50,21 +50,25 @@ $objPHPExcel->setActiveSheetIndex()->setCellValue('C59', $hocky);
 
 if($list_danhsachlop){
 	$i = 7;
-	$arr_hocsinh = iterator_to_array($list_danhsachlop);
+	$arr_hocsinh = array();
 	foreach($list_danhsachlop as $k => $l){
 		$hocsinh->id = $l['id_hocsinh'];
 		$hs = $hocsinh->get_one();
-		$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+		$arr_hocsinh[] = $hs['ten'] . '---'. strval($l['_id']) . '---'.strval($l['id_hocsinh']);
+		//$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+		//$arr_hocsinh[$k]['ten'] = $hs['ten'];
 	}
-	$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
+	$arr_hocsinh = sort_danhsach($arr_hocsinh);
 	foreach ($arr_hocsinh as $dsl) {
-		$hocsinh->id = $dsl['id_hocsinh'];$hs = $hocsinh->get_one();
+		$a = explode('---', $dsl); $id_hocsinh = end($a);
+		$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one();
+		$hs = $hocsinh->get_one();
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $hs['masohocsinh']);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $hs['hoten']);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $hs['gioitinh']);
 
-		if(isset($dsl[$hocky])){
-			foreach($dsl[$hocky] as $hk){
+		if(isset($hs[$hocky])){
+			foreach($hs[$hocky] as $hk){
 				if($hk['id_monhoc'] == $id_monhoc){
 					if(isset($hk['diemmieng'])){
 						foreach($hk['diemmieng'] as $key => $value){

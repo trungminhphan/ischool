@@ -9,6 +9,7 @@ class HocSinh{
 	public $masohocsinh = '';
 	public $cmnd = '';
 	public $hoten = '';
+	public $ten = '';
 	public $ngaysinh = '';
 	public $gioitinh = '';
 	public $noisinh = '';
@@ -58,10 +59,10 @@ class HocSinh{
 	}
 
 	public function get_all_condition($condition){
-		return $this->_collection->find($condition)->sort(array('hoten'=>1));	
+		return $this->_collection->find($condition)->sort(array('hoten'=>1));
 	}
 	public function get_all_condition_limit($condition, $number){
-		return $this->_collection->find($condition)->limit($number)->sort(array('hoten'=>1));	
+		return $this->_collection->find($condition)->limit($number)->sort(array('hoten'=>1));
 	}
 	public function get_list_limit($limit){
 		return $this->_collection->find()->sort(array('hoten'=>1))->limit($limit);
@@ -79,8 +80,14 @@ class HocSinh{
 		return false;
 	}
 
+	public function set_ten(){
+		$query = array('$set' => array('ten' => $this->ten));
+		$condition = array('_id' => new MongoId($this->id));
+		return $this->_collection->update($condition, $query);
+	}
+
 	public function insert(){
-		$query = array('hinhanh' => $this->hinhanh , 
+		$query = array('hinhanh' => $this->hinhanh ,
 							'cmnd' => $this->cmnd,
 							'masohocsinh' => $this->masohocsinh,
 							'hoten' => $this->hoten,
@@ -116,7 +123,7 @@ class HocSinh{
 
 	public function insert_id(){
 		$query = array('_id' => new MongoId($this->id),
-							'hinhanh' => $this->hinhanh , 
+							'hinhanh' => $this->hinhanh ,
 							'cmnd' => $this->cmnd,
 							'masohocsinh' => $this->masohocsinh,
 							'hoten' => $this->hoten,
@@ -151,7 +158,7 @@ class HocSinh{
 	}
 
 	public function edit(){
-		$query = array('$set' => array('hinhanh' => $this->hinhanh, 
+		$query = array('$set' => array('hinhanh' => $this->hinhanh,
 							'cmnd' => $this->cmnd,
 							'masohocsinh' => $this->masohocsinh,
 							'hoten' => $this->hoten,
@@ -186,7 +193,7 @@ class HocSinh{
 	}
 
 	public function student_edit(){
-		$query = array('$set' => array('hinhanh' => $this->hinhanh , 
+		$query = array('$set' => array('hinhanh' => $this->hinhanh ,
 							'cmnd' => $this->cmnd,
 							'hoten' => $this->hoten,
 							'ngaysinh' => $this->ngaysinh,
@@ -211,7 +218,7 @@ class HocSinh{
 							'nghenghiepme' => $this->nghenghiepme,
 							'donvicongtacme' => $this->donvicongtacme));
 		$condition = array('_id'=> new MongoId($this->id));
-		return $this->_collection->update($condition, $query);	
+		return $this->_collection->update($condition, $query);
 	}
 
 	public function delete(){
