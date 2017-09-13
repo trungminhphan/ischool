@@ -45,7 +45,7 @@ if(isset($_GET['submit'])){
 				$("#id_lophoc").html(data); $("#id_lophoc").select2();
 				$.get("load_danhsachhocsinh.html?id_namhoc="+id_namhoc + "&id_lophoc="+$("#id_lophoc").val(), function(hocsinh){
 					$("#id_hocsinh").html(hocsinh);$("#id_hocsinh").select2();
-				});	
+				});
 			});
 		});
 		$("#id_lophoc").change(function(){
@@ -67,7 +67,7 @@ if(isset($_GET['submit'])){
 	});
 </script>
 <h1><a href="index.html" class="nav-button transform"><span></span></a>&nbsp;In phiếu liên lạc từng học sinh.</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET" id="formloaddanhsach">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="GET" id="formloaddanhsach">
 <div class="grid example">
 	<div class="row cells12">
 		<div class="cell colspan2 padding-top-10 align-right">Năm học</div>
@@ -116,8 +116,8 @@ if(isset($_GET['submit'])){
 	</tr>
 	<tr>
 		<td colspan="3" align="center">
-		<?php 
-			$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one(); 
+		<?php
+			$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one();
 			$lophoc->id = $id_lophoc; $lh = $lophoc->get_one();
 			$namhoc->id = $id_namhoc; $nh = $namhoc->get_one();
 		?>
@@ -128,7 +128,7 @@ if(isset($_GET['submit'])){
 		</td>
 	</tr>
 </table>
-<table width="100%" border="1" cellpadding="5" id="bangdiem_1200"> 
+<table width="100%" border="1" cellpadding="5" id="bangdiem_1200">
 	<tr>
 		<th rowspan="2" width="50">STT</th>
 		<th rowspan="2" width="150">Môn học</th>
@@ -205,7 +205,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 								//if(isset($hk['diem1tiet'])){
 									//Toi da 5 cot
 								for($i=0; $i<6; $i++){
@@ -217,7 +217,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 								//if(isset($hk['diemthi'])){
 								for($i=0; $i<1; $i++){
 									if(isset($hk['diemthi'][$i])){
@@ -259,7 +259,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 								//if(isset($hk2['diem15phut'])){
 									//Toi da 5 cot
 								for($i=0; $i<5; $i++){
@@ -271,7 +271,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 
 								//if(isset($hk2['diem1tiet'])){
 								for($i=0; $i<6; $i++){
@@ -296,7 +296,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-							} 
+							}
 						}
 						if($col==0){
 							for($i=0; $i<15;$i++){
@@ -308,7 +308,7 @@ if(isset($list_monhoc) && $list_monhoc){
 							echo '<td class="marks"></td>';
 						}
 					}
-					
+
 					if($sum_diem_mon1 && $count_diem_mon1){
 						$trungbinh1 = round($sum_diem_mon1/$count_diem_mon1, 1);
 						$sum_hocky1 += $trungbinh1; $count_hocky1++;
@@ -321,7 +321,7 @@ if(isset($list_monhoc) && $list_monhoc){
 							if($trungbinh1 < 2) $trungbinhduoi2_hk1++;
 						}
 					} else{
-						$trungbinh1 = '';	
+						$trungbinh1 = '';
 					}
 
 					if($sum_diem_mon2 && $count_diem_mon2){
@@ -354,14 +354,14 @@ if(isset($list_monhoc) && $list_monhoc){
 				}
 			echo '</tr>';
 			$j++;
-		} 
+		}
 	}
 
 }
 ?>
 </table>
 <?php if(isset($list_monhoc) && $list_monhoc): ?>
-<table width="100%" border="1" cellpadding="5" id="bangdiem_1200" style="margin-top:3px;"> 
+<table width="100%" border="1" cellpadding="5" id="bangdiem_1200" style="margin-top:3px;">
 	<tr>
 		<th rowspan="2" width="50">STT</th>
 		<th rowspan="2" width="150">Môn học</th>
@@ -516,7 +516,7 @@ if(isset($list_monhoc) && $list_monhoc){
 									}
 								}
 								//}
-							} 
+							}
 						}
 						if($col==0){
 							for($i=0; $i<15;$i++){
@@ -552,14 +552,14 @@ if(isset($list_monhoc) && $list_monhoc){
 					} else {
 						$trungbinh2 = '';
 					}
-					$canam = $trungbinh2; if($canam=='Đ'){ $trungbinh_d_cn++; }					 
+					$canam = $trungbinh2; if($canam=='Đ'){ $trungbinh_d_cn++; }
 					echo '<td class="marks">'.(($trungbinh1 && is_numeric($trungbinh1)) ? format_decimal($trungbinh1,1) : $trungbinh1).'</td>';
 					echo '<td class="marks">'.(($trungbinh2 && is_numeric($trungbinh2)) ? format_decimal($trungbinh2,1) : $trungbinh2).'</td>';
 					echo '<td class="marks">'.(($canam && is_numeric($canam)) ? format_decimal($canam,1) : $canam).'</td>';
 				}
 			echo '</tr>';
 			$j++;
-		} 
+		}
 	}
 	?>
 </table>
@@ -571,7 +571,7 @@ if(isset($list_monhoc) && $list_monhoc){
 	$vang_khongphep_hk1 = isset($pll['danhgia_hocky1']['nghikhongphep']) ? $pll['danhgia_hocky1']['nghikhongphep'] : '';
 	$vang_cophep_hk2 = isset($pll['danhgia_hocky2']['nghicophep']) ? $pll['danhgia_hocky2']['nghicophep'] : '';
 	$vang_khongphep_hk2 = isset($pll['danhgia_hocky2']['nghikhongphep']) ? $pll['danhgia_hocky2']['nghikhongphep'] : '';
-	
+
 	if($count_hocky1) $trungbinh_hocky1 = round($sum_hocky1 / $count_hocky1, 1);
 	else $trungbinh_hocky1 = '';
 	if($count_hocky2) $trungbinh_hocky2 = round($sum_hocky2 / $count_hocky2, 1);
@@ -637,7 +637,7 @@ if(isset($list_monhoc) && $list_monhoc){
 			case 'Y': $diemxephang_hk1 += 0.1; break;
 			default: $diemxephang_hk1 += 0; break;
 		}
-		$diemxephang_hk1 += $trungbinh_hocky1;	
+		$diemxephang_hk1 += $trungbinh_hocky1;
 		$xephang_hk1 = ranks($diemxephang_hk1, $scores_hk1);
 	} else {
 		$hocluc_hk1 = '';
@@ -827,7 +827,7 @@ if(isset($list_monhoc) && $list_monhoc){
 						}
 					}
 					?>
-				</ol>				
+				</ol>
 			</div>
 		</td>
 		<td width="30%" style="vertical-align:top;">
@@ -847,7 +847,7 @@ if(isset($list_monhoc) && $list_monhoc){
 						}
 					}
 					?>
-				</ol>				
+				</ol>
 			</div>
 		</td>
 		<td width="39%" style="vertical-align:top;">

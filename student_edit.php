@@ -24,7 +24,7 @@ if(isset($_POST['submit'])){
             $gridfs->caption = isset($_POST['hoten']) ? $_POST['hoten'] : '';
             $hinhanh = $gridfs->insert_files();
 
-            $old_hinhanh = isset($_POST['old_hinhanh']) ? $_POST['old_hinhanh'] : '';    
+            $old_hinhanh = isset($_POST['old_hinhanh']) ? $_POST['old_hinhanh'] : '';
             if($old_hinhanh){
                 $gridfs->id = $old_hinhanh;
                 $gridfs->delete();
@@ -60,12 +60,13 @@ if(isset($_POST['submit'])){
 	$namsinhme = isset($_POST['namsinhme']) ? $_POST['namsinhme'] : '';
 	$nghenghiepme = isset($_POST['nghenghiepme']) ? $_POST['nghenghiepme'] : '';
 	$donvicongtacme = isset($_POST['donvicongtacme']) ? $_POST['donvicongtacme'] : '';
-
+  $a = explode(" ", trim($hoten)); $ten = end($a);
 	$hocsinh->id = $id;
 	$hocsinh->hinhanh = $hinhanh;
 	$hocsinh->masohocsinh = $masohocsinh;
 	$hocsinh->cmnd = $cmnd;
 	$hocsinh->hoten = $hoten;
+  $hocsinh->ten = $ten;
 	$hocsinh->ngaysinh = $ngaysinh;
 	$hocsinh->gioitinh = $gioitinh;
 	$hocsinh->noisinh = $noisinh;
@@ -95,7 +96,7 @@ if(isset($_POST['submit'])){
 	} else {
 		$msg = 'Không thể chỉnh sửa.';
 	}
-	
+
 }
 if($id){
 	$hocsinh->id = $id;
@@ -259,9 +260,9 @@ if($id){
             <?php
             if(isset($hinhanh)){
                 if($hinhanh && file_exists('uploads/teachers/' . $hinhanh)){
-                    echo '<img src="uploads/teachers/'.$gv['hinhanh'].'" width="40" height="50" />';    
+                    echo '<img src="uploads/teachers/'.$gv['hinhanh'].'" width="40" height="50" />';
                 } else if($hinhanh && !file_exists('uploads/teachers/' . $hinhanh)){
-                    echo '<img src="image.html?id='.$hinhanh.'" width="40" height="50" />';    
+                    echo '<img src="image.html?id='.$hinhanh.'" width="40" height="50" />';
                 }
                 echo '<input type="hidden" name="old_hinhanh" id="old_hinhanh" value="'.$hinhanh.'"/>';
             }

@@ -15,7 +15,7 @@ $id_namhoc = ''; $id_lophoc='';
 	});
 </script>
 <h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Import danh sách học sinh từ file Excel</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="importhocsinh" enctype="multipart/form-data">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="importhocsinh" enctype="multipart/form-data">
 <div class="grid">
 	<div class="row cells12">
 		<div class="cell colspan2 align-right padding-top-10">Chọn tập tin</div>
@@ -34,7 +34,6 @@ $id_namhoc = ''; $id_lophoc='';
 						echo '<option value="'.$lh['_id'].'">'.$lh['tenlophoc'].'</option>';
 					}
 				}
-
 			?>
 			</select>
 		</div>
@@ -129,7 +128,7 @@ if(isset($_POST['submit'])){
 							$namsinhme = $value['X']; $nghenghiepme = $value['Y'];
 							$donvicongtacme = $value['Z']; $khenthuong = $value['AA'];
 							$kyluat = $value['AB']; $ghichu = $value['I'];	$totnghiep = $value['AC'];
-							$a = explode(' ', $hoten);$ten = end($a);
+							$a = explode(" ", trim($hoten));$ten = end($a);
 							$id_hocsinh = new MongoId();
 							$hocsinh->id = $id_hocsinh;
 							$hocsinh->hinhanh = $hinhanh;

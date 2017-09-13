@@ -45,7 +45,7 @@ if(isset($_POST['submit'])){
             $gridfs->caption = isset($_POST['hoten']) ? $_POST['hoten'] : '';
             $hinhanh = $gridfs->insert_files();
 
-            $old_hinhanh = isset($_POST['old_hinhanh']) ? $_POST['old_hinhanh'] : '';    
+            $old_hinhanh = isset($_POST['old_hinhanh']) ? $_POST['old_hinhanh'] : '';
             if($old_hinhanh){
                 $gridfs->id = $old_hinhanh;
                 $gridfs->delete();
@@ -87,12 +87,13 @@ if(isset($_POST['submit'])){
 	$kyluat = isset($_POST['kyluat']) ? $_POST['kyluat'] : '';
 	$ghichu = isset($_POST['ghichu']) ? $_POST['ghichu'] : '';
 	$totnghiep = isset($_POST['totnghiep']) ? $_POST['totnghiep'] : '';;
-
+  $a = explode(" ", trim($hoten)); $ten = end($a);
 	$hocsinh->id = $id;
 	$hocsinh->hinhanh = $hinhanh;
 	$hocsinh->masohocsinh = $masohocsinh;
 	$hocsinh->cmnd = $cmnd;
 	$hocsinh->hoten = $hoten;
+  $hocsinh->ten = $ten;
 	$hocsinh->ngaysinh = $ngaysinh;
 	$hocsinh->gioitinh = $gioitinh;
 	$hocsinh->noisinh = $noisinh;
@@ -136,7 +137,10 @@ if(isset($_POST['submit'])){
 		if($hocsinh->check_exists()){
 			$msg = 'Mã số học sinh bị trùng, Vui lòng chọn tên khác...</b>';
 		} else {
-			if($hocsinh->insert()){
+      $id_hocsinh = new MongoId(); $hocsinh->id = $id_hocsinh;
+			if($hocsinh->insert_id()){
+        $query_user = array('username' => $masohocsinh, 'password' => md5($masohocsinh), 'id_hocsinh' => new MongoId($id_hocsinh), 'roles' => (int) STUDENT);
+        $users->insert($query_user);
 				transfers_to('danhmuchocsinh.html');
 			} else {
 				$msg = 'Không thể thêm học sinh mới.';
@@ -324,9 +328,9 @@ if($id){
             <?php
             if(isset($hinhanh)){
                 if($hinhanh && file_exists('uploads/teachers/' . $hinhanh)){
-                    echo '<img src="uploads/teachers/'.$gv['hinhanh'].'" width="40" height="50" />';    
+                    echo '<img src="uploads/teachers/'.$gv['hinhanh'].'" width="40" height="50" />';
                 } else if($hinhanh && !file_exists('uploads/teachers/' . $hinhanh)){
-                    echo '<img src="image.html?id='.$hinhanh.'" width="40" height="50" />';    
+                    echo '<img src="image.html?id='.$hinhanh.'" width="40" height="50" />';
                 }
                 echo '<input type="hidden" name="old_hinhanh" id="old_hinhanh" value="'.$hinhanh.'"/>';
             }

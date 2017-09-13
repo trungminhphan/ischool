@@ -1,7 +1,7 @@
 <?php
 require_once('header.php');
 $hocsinh = new HocSinh();
-$query = array('masohocsinh' => new MongoRegex('/pps201706/'));
+$query = array('masohocsinh' => new MongoRegex('/pps201406/'));
 $list = $hocsinh->get_all_condition($query)->sort(array('masohocsinh' => 1));
 echo 'Id nam hoc: ' . $namhoc_macdinh['_id'] .'<hr />';
 $danhsachlop = new DanhSachLop();
@@ -15,7 +15,6 @@ if($list){
 
     //Xoa user by id_hocsinh
     $users->id_hocsinh = $l['_id']; $users->delete_by_id_hocsinh();
-
 
     //Xoa danh muc
     $hocsinh->id = $l['_id']; $hocsinh->delete();

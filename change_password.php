@@ -39,7 +39,7 @@ if($users->get_userid()){
 		<?php endif; ?>
 	});
 </script>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="adduserform" data-role="validator" data-show-required-state="false">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" id="adduserform" data-role="validator" data-show-required-state="false">
 <div class="grid example">
 	<div class="row cells12">
 		<div class="cell colspan2"></div>
@@ -69,7 +69,7 @@ if($users->get_userid()){
 		<div class="cell colspan12 align-center">
 			<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-user-check"></span> Cập nhật</button>
 			<a href="profiles.html" class="button"><span class="mif-keyboard-return"></span> Trở về trang thông tin cá nhân</a>
-		
+
 		</div>
 	</div>
 </div>
