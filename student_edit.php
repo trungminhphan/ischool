@@ -143,7 +143,7 @@ if($id){
     });
 </script>
 <h1><a href="profiles.html" class="nav-button transform"><span></span></a>&nbsp;Thông tin Học sinh</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="themhocsinhform" data-role="validator" data-show-required-state="false" enctype="multipart/form-data">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="themhocsinhform" data-role="validator" data-show-required-state="false" enctype="multipart/form-data">
 <?php $csrf->echoInputField(); ?>
 <input type="hidden" name="id" id="id" value="<?php echo isset($id) ? $id : ''; ?>" />
 <div class="grid">

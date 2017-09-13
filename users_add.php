@@ -39,9 +39,9 @@ if(isset($_POST['submit'])){
 			if($users->check_exist_username()){
 				$msg = 'Tài khoản này đã tồn tại.';
 			} else {
-				if($users->insert($query)) transfers_to('users.html');	
+				if($users->insert($query)) transfers_to('users.html');
 			}
-			
+
 		}
 	}
 }
@@ -67,7 +67,7 @@ if($id){
 	});
 </script>
 <h1><a href="danhmuchocsinh.html" class="nav-button transform"><span></span></a>&nbsp;Thông tin tài khoản người dùng.</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="adduserform" id="adduserform"  data-role="validator" data-show-required-state="false">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" id="adduserform" id="adduserform"  data-role="validator" data-show-required-state="false">
 <input type="hidden" name="id" id="id" value="<?php echo isset($id) ? $id : ''; ?>">
 <div class="grid example">
 	<div class="row cells12">
@@ -94,7 +94,7 @@ if($id){
 					$giaovien->id = $id_giaovien; $gv = $giaovien->get_one();
 					echo '<option value="'.$gv['_id'].'" selected>'.$gv['masogiaovien'] .' - '.$gv['hoten'].'</option>';
 				}
-				
+
 					/*$giaovien_list = $giaovien->get_all_list();
 					if($giaovien_list){
 						foreach ($giaovien_list as $gv) {

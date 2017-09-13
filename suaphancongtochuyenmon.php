@@ -36,8 +36,8 @@ if(isset($_POST['submit'])){
 			} else {
 				$msg = 'Không thể chỉnh sửa';
 				//array_push($arr_giaivien, new MongoId($value));
-			}	
-		}		
+			}
+		}
 	} else {
 		$msg = 'Vui lòng chọn năm học, tổ, giáo viên';
 	}
@@ -61,7 +61,7 @@ if($id && $act=='edit'){
 	});
 </script>
 <h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Sửa phân công Giáo viên - Tổ chuyên môn</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="formphancongtochuyenmon">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="formphancongtochuyenmon">
 <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
 <div class="grid example">
 	<div class="row cells12">

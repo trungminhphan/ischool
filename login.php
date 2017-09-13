@@ -7,8 +7,8 @@ $session = new SessionManager();
 $users = new Users();
 
 if($users->isLoggedIn()){
-    transfers_to('./index.html');   
-} 
+    transfers_to('./index.html');
+}
 require('inc/config.inc.php');
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 if(isset($_POST['login'])){
@@ -75,7 +75,7 @@ if(isset($_POST['login'])){
 </head>
 <body style="background-color: #067FD9;">
     <div class="login-form padding20 block-shadow">
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="loginform">
+        <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="loginform">
             <input type="hidden" name="url" id="url" value="<?php echo $url; ?>" />
             <h1 class="text-light">Đăng nhập hệ thống</h1>
             <h4><span class="mif-profile"></span> Sổ liên lạc điện tử</h4>

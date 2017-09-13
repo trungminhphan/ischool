@@ -22,7 +22,7 @@ if(isset($_POST['submit'])){
 			//array_push($arr_giaivien, new MongoId($value));
 			transfers_to('phancongtochuyenmon.php?id_namhoc='. $id_namhoc . '&id_to=' . $id_to .'&submit=OK');
 		}
-		
+
 	} else {
 		$msg = 'Vui lòng chọn năm học, tổ, giáo viên';
 	}
@@ -40,7 +40,7 @@ if(isset($_POST['submit'])){
 	});
 </script>
 <h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Phân công Giáo viên - Tổ chuyên môn</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="formphancongtochuyenmon">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="formphancongtochuyenmon">
 <div class="grid example">
 	<div class="row cells12">
 		<div class="cell colspan2 padding-top-10 align-right">Năm học</div>

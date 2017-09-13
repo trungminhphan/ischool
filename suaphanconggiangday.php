@@ -34,8 +34,8 @@ if(isset($_POST['submit'])){
 		}
 	} else {
 		$msg = 'Không thể chỉnh sửa';
-	}	
-	
+	}
+
 }
 
 if($id){
@@ -57,7 +57,7 @@ if($id){
 	});
 </script>
 <h1><a href="phanconggiangday.php" class="nav-button transform"><span></span></a>&nbsp;Sửa thông tin phân công giáo viên giảng dạy</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="formphanconggiangday">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="formphanconggiangday">
 <input type="hidden" name="id" id="id" value="<?php echo isset($id) ? $id: ''; ?>" />
 <div class="grid example" style="margin-top:30px;">
 	<div class="row cells12">

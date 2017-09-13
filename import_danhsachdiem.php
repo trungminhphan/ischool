@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once('header.php');
 check_permis(!$users->is_teacher());
 require_once('cls/PHPExcel/IOFactory.php');
@@ -39,7 +39,7 @@ if(isset($_POST['submit'])){
 									$query_delete = array('$unset' => array($hocky . '.$.diemmieng'  => true,  $hocky . '.$.diem15phut'  => true, $hocky . '.$.diem1tiet'  => true, $hocky . '.$.diemthi'  => true));
 									$condition = array('id_hocsinh'=>new MongoId($id_hocsinh),'id_lophoc'=> new MongoId($id_lophoc),'id_namhoc'=>new MongoId($id_namhoc), $hocky.'.id_monhoc'=> new MongoId($id_monhoc));
 									$danhsachlop->delete_diem($condition, $query_delete);
-								} 
+								}
 								foreach($arr_cotdiem as $k => $v){
 									if($value[$v]){
 										if($v=='E' || $v=='F' || $v=='G') $cotdiem = 'diemmieng';
@@ -55,7 +55,7 @@ if(isset($_POST['submit'])){
 											$update_arr = array('$push'=> array($hocky. '.$.'. $cotdiem => $diem));
 											$condition = array('id_hocsinh'=>new MongoId($id_hocsinh),'id_lophoc'=> new MongoId($id_lophoc),'id_namhoc'=>new MongoId($id_namhoc), $hocky.'.id_monhoc'=> new MongoId($id_monhoc));
 										} else {
-											$update_arr = array('$push'=>array($hocky=>array('id_monhoc'=> new MongoId($id_monhoc), $cotdiem=>array($diem))));	
+											$update_arr = array('$push'=>array($hocky=>array('id_monhoc'=> new MongoId($id_monhoc), $cotdiem=>array($diem))));
 											$condition = array('id_hocsinh'=>new MongoId($id_hocsinh),'id_lophoc'=> new MongoId($id_lophoc),'id_namhoc'=>new MongoId($id_namhoc));
 										}
 										$danhsachlop->cap_nhat_diem($condition, $update_arr);
@@ -89,7 +89,7 @@ if($filename){
 	$siso = $objPHPExcel->getActiveSheet()->getCell('B4')->getValue();
 	$hotengiaovien = $objPHPExcel->getActiveSheet()->getCell('D3')->getValue();
 	$tenhocky = $objPHPExcel->getActiveSheet()->getCell('D4')->getValue();
-	
+
 	$khoanhapdiem->id_namhoc = $id_namhoc; $khoanhapdiem->id_lophoc = $id_lophoc;
 	$khoanhapdiem->id_monhoc = $id_monhoc; $khoanhapdiem->hocky = $hocky;
 
@@ -103,9 +103,9 @@ if($filename){
 	});
 </script>
 <h1><a href="index.html" class="nav-button transform"><span></span></a>&nbsp;Import điểm từ Excel.</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="import_danhsachdiem" enctype="multipart/form-data">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="import_danhsachdiem" enctype="multipart/form-data">
 	<img src="images/icon_excel.png" />
-		<b>CHỌN DANH SÁCH ĐIỂM [EXCEL]:</b> 
+		<b>CHỌN DANH SÁCH ĐIỂM [EXCEL]:</b>
 		<div class="input-control file" data-role="input">
 			<input type="file" name="danhsachlop" id="danhsachlop" placeholder="Chọn tập tin" />
 			<button class="button fg-green"><span class="mif-file-excel"></span></button>
@@ -117,7 +117,7 @@ if($filename){
 <?php
 if($filename){
 	$lophoc->id = $id_lophoc; $lh = $lophoc->get_one(); $tenlophoc=$lh['tenlophoc'];
-	$monhoc->id = $id_monhoc; $mh = $monhoc->get_one(); $tenmonhoc=$mh['tenmonhoc']; 
+	$monhoc->id = $id_monhoc; $mh = $monhoc->get_one(); $tenmonhoc=$mh['tenmonhoc'];
 	$mamonhoc=$mh['mamonhoc'];
 	$namhoc->id = $id_namhoc; $nh = $namhoc->get_one(); $tennamhoc = $nh['tennamhoc'];
 ?>

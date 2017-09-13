@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once('header.php');
 check_permis(!$users->is_admin());
 $update = isset($_GET['update']) ? $_GET['update'] : '';
@@ -50,7 +50,7 @@ if(isset($_POST['submit'])){
 	});
 </script>
 <h1><a href="index.html" class="nav-button transform"><span></span></a>&nbsp;Tạo danh sách lớp</h1>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET" id="searchhocsinh" data-role="validator" data-show-required-state="false">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="GET" id="searchhocsinh" data-role="validator" data-show-required-state="false">
 <a href="themhocsinh.html" class="button"><span class="mif-plus"></span> Thêm học sinh mới</a>
 	Họ tên/CMND/Mã số học sinh
 	<div class="input-control text">
@@ -58,11 +58,11 @@ if(isset($_POST['submit'])){
 		<span class="input-state-error mif-warning"></span><span class="input-state-success mif-checkmark"></span>
 	</div>
 	<button name="search_hocsinh" id="search_hocsinh" value="OK" class="button primary"><span class="mif-search"></span> Tìm kiếm</button>
-</form> 
+</form>
 <hr />
 <?php
-if(isset($_GET['search_hocsinh'])): 
-if(isset($hocsinh_list) && $hocsinh_list && $hocsinh_list->count() > 0): 
+if(isset($_GET['search_hocsinh'])):
+if(isset($hocsinh_list) && $hocsinh_list && $hocsinh_list->count() > 0):
 	$lophoc_list = $lophoc->get_all_list();
 	$namhoc_list = $namhoc->get_list_limit(3);
 ?>
@@ -74,7 +74,7 @@ if(isset($hocsinh_list) && $hocsinh_list && $hocsinh_list->count() > 0):
   		}
 	}
 </script>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="formtaodanhsach">
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="formtaodanhsach">
 <table class="table border bordered striped hovered">
 	<tr>
 		<th>

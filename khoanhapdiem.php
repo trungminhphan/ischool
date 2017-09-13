@@ -20,7 +20,7 @@ if(isset($_GET['load_danhsach'])){
 			foreach ($id_lophoc as $key => $value) {
 				array_push($arr_lophoc, new MongoId($value));
 			}
-			//array_push($query, array('id_lophoc' => new MongoId($id_lophoc)));	
+			//array_push($query, array('id_lophoc' => new MongoId($id_lophoc)));
 			array_push($query, array('id_lophoc' => array('$in' => $arr_lophoc)));
 		}
 		$query = array('$and' => $query);
@@ -97,7 +97,7 @@ Năm học: <div class="input-control select">
 			}
 		}
 		?>
-	</select>	
+	</select>
 </div>
 &nbsp;&nbsp;&nbsp;&nbsp;Lớp học:
 <div class="input-control select" style="min-width:400px;">
@@ -110,14 +110,14 @@ Năm học: <div class="input-control select">
 			}
 		}
 		?>
-	</select>	
+	</select>
 </div>
 &nbsp;&nbsp;&nbsp;&nbsp;Học kỳ:
 <div class="input-control select">
 	<select name="hocky" id="hocky" class="select2">
 		<option value="hocky1" <?php echo $hocky=='hocky1' ? ' selected':''; ?>>Học kỳ I</option>
-		<option value="hocky2" <?php echo $hocky=='hocky2' ? ' selected':''; ?>>Học kỳ II</option>	
-	</select>	
+		<option value="hocky2" <?php echo $hocky=='hocky2' ? ' selected':''; ?>>Học kỳ II</option>
+	</select>
 </div>
 <button name="load_danhsach" id="load_danhsach" value="OK" class="button primary"><span class="mif-search"></span> Tìm kiếm</button>
 
@@ -125,7 +125,7 @@ Năm học: <div class="input-control select">
 <hr />
 
 <?php if($giangday_list && $giangday_list->count() > 0) : ?>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="khoanhapdiemform" >
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="POST" id="khoanhapdiemform" >
 <?php
 if($id_lophoc){
 	foreach ($id_lophoc as $key => $value) {
