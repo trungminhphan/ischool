@@ -12,7 +12,7 @@ if(isset($_GET['submit'])){
 	$danhsachlop->id_lophoc = $id_lophoc;
 	$danhsachlop->id_namhoc = $id_namhoc;
 	$danhsachlop->id_monhoc = $id_monhoc;
-	$danhsachlop_list = $danhsachlop->get_bangdiem();
+	$danhsachlop_list = $danhsachlop->get_bangdiem_all();
 	$khoanhapdiem->id_namhoc = $id_namhoc;
 	$khoanhapdiem->id_lophoc = $id_lophoc;
 	$khoanhapdiem->id_monhoc = $id_monhoc;
@@ -24,19 +24,19 @@ if(isset($_GET['submit'])){
 	$(document).ready(function(){
 		$(".select2").select2();
 		var class_diemso;
-		var dialog_suadiem; 
+		var dialog_suadiem;
 		$(".diemso").click(function() {
 			class_diemso = $(this);
 			if($(this).text()=='M' || $(this).text() == "Đ" || $(this).text() =="CĐ"){
 				var ds = $(this).text();
 			} else {
-				var ds = parseFloat($(this).text().replace(",", "."));	
+				var ds = parseFloat($(this).text().replace(",", "."));
 			}
 			$("#diemso").select2('val', ds);
 			dialog_suadiem = $("#dialog_suadiem").data('dialog');
-			dialog_suadiem.open(); 
+			dialog_suadiem.open();
 		});
-		
+
 		$("#btn_suadiem").click(function(e) {
 			var diemso = $("#diemso").val();
 			//var tdiemso = $("#diemso option:selected").text();
@@ -45,7 +45,7 @@ if(isset($_GET['submit'])){
 				alert('Hãy điền đúng điểm số từ 0 - 10...');
 			} else {
 				$.get(link, function(data){
-					//$(class_diemso).text(tdiemso); 
+					//$(class_diemso).text(tdiemso);
 					$(".dialogs").dialog("close"); location.reload();
 				});
 			}
@@ -112,8 +112,8 @@ if(isset($_GET['submit'])){
 </form>
 <hr />
 
-<?php 
-if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0): 
+<?php
+if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 	$monhoc->id = $id_monhoc; $lophoc->id=$id_lophoc; $namhoc->id = $id_namhoc;
 	$mh_title = $monhoc->get_one();$lop_title = $lophoc->get_one();$nh_title = $namhoc->get_one();
 	$mamonhoc = $mh_title['mamonhoc'];
@@ -184,21 +184,24 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 </thead>
 <tbody>
 <?php
+
 	$i = 1;
-	$arr_hocsinh = iterator_to_array($danhsachlop_list);
+	$arr_hocsinh = array();//iterator_to_array($danhsachlop_list);
 	foreach($danhsachlop_list as $k => $l){
 		$hocsinh->id = $l['id_hocsinh'];
 		$hs = $hocsinh->get_one();
-		$arr_hocsinh[$k]['masohocsinh'] = $hs['masohocsinh'];
+		$arr_hocsinh[] = $hs['ten'] . '---'. strval($l['_id']) . '---'.strval($l['id_hocsinh']);
 	}
-	$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
-	foreach($arr_hocsinh as $ds) {
+	//$arr_hocsinh = sort_array_and_key($arr_hocsinh, 'masohocsinh', SORT_ASC);
+	$arr_hocsinh = sort_danhsach($arr_hocsinh);
+	foreach($arr_hocsinh as $dsl) {
+		$a = explode('---', trim($dsl)); $id_hocsinh = end($a);
+		$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one();$hs = $hocsinh->get_one();
+		$danhsachlop->id_hocsinh = $id_hocsinh; $ds = $danhsachlop->get_one_hocsinh();
 		$count_mien1 = 0; $count_d1 = 0; $count_cd1=0;$trungbinh1='';
 		$count_mien2 = 0; $count_d2 = 0; $count_cd2=0;$trungbinh2='';
 		$diemthi1 = '';	$diemthi2 = '';	$canam = ''; $count_cot1tiet1='';
 		$sum_cot15phut1 = ''; $sum_cot1tiet1=''; $count_cot15phut1='';$canam='';
-		$hocsinh->id = $ds['id_hocsinh'];
-		$hs = $hocsinh->get_one();
 		if($i%2==0) $class='eve'; else $class = 'odd';
 		if($i%5==0) $line='sp'; else $line='';
 		echo '<tr class="'.$class. ' '.$line.'">';
@@ -231,7 +234,7 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 							$n_cotmieng++;
 							$count_cotmieng1++;
 							$sum_cotmieng1 += doubleval($value);
-						}			
+						}
 						if($n_cotmieng < 3 ){
 							for($n_cotmieng; $n_cotmieng < 3; $n_cotmieng++){
 								echo '<td class="marks"></td>';
@@ -329,12 +332,12 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 			}
 			if($bln_hocky1 == false){
 				for($k=0; $k<15; $k++){
-					echo '<td class="marks"></td>';				
+					echo '<td class="marks"></td>';
 				}
 			}
 		} else {
 			for($k=0; $k<15; $k++){
-				echo '<td class="marks"></td>';				
+				echo '<td class="marks"></td>';
 			}
 		}
 
@@ -364,7 +367,7 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 							$n_cotmieng++;
 							$count_cotmieng2++;
 							$sum_cotmieng2 += doubleval($value);
-						}				
+						}
 						if($n_cotmieng < 3 ){
 							for($n_cotmieng; $n_cotmieng < 3; $n_cotmieng++){
 								echo '<td class="marks"></td>';
@@ -391,7 +394,7 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 							if($users->is_teacher() && ($id_gvbm == $users->get_id_giaovien()) && !$khoanhapdiem->check_isLock()){
 								echo '<td class="marks"><a href="get.suadiemhocsinh.html?id='.$ds['_id'].'&id_monhoc='.$hk2['id_monhoc'].'&hocky=hocky2&cotdiem=diem15phut&key='.$key.'" onclick="return false;" class="diemso">'.$diem.'</a></td>';
 							} else {
-								echo '<td class="marks">'.$diem.'</td>';	
+								echo '<td class="marks">'.$diem.'</td>';
 							}
 							$n_cot15phut++;
 							$count_cot15phut2++;
@@ -459,16 +462,16 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 					} else {
 						echo '<td class="marks"></td>';
 					}
-				} 
+				}
 			}
 			if($bln_hocky2 == false){
 				for($j=0; $j<15; $j++){
-					echo '<td class="marks"></td>';				
-				}	
-			}					
+					echo '<td class="marks"></td>';
+				}
+			}
 		} else {
 			for($j=0; $j<15; $j++){
-				echo '<td class="marks"></td>';				
+				echo '<td class="marks"></td>';
 			}
 		}
 		//***************hoc ky1
@@ -553,9 +556,9 @@ if(isset($danhsachlop_list) && $danhsachlop_list->count() > 0):
 <?php endif; ?>
 
 <!-- Sửa điểm-->
-<div id="dialog_suadiem" data-role="dialog" data-overlay="true" class="padding30" data-close-button="true"> 
+<div id="dialog_suadiem" data-role="dialog" data-overlay="true" class="padding30" data-close-button="true">
 	<h4><span class="mif-pencil"></span> Chỉnh sửa điểm</h4>
-	<b>Điểm:</b> 
+	<b>Điểm:</b>
 	<select id="diemso" name="diemso" class="select2" style="min-width:100px;">
 		<option value="M">M</option>
 	<?php if($mamonhoc == 'THEDUC' || $mamonhoc =='AMNHAC' || $mamonhoc=='MYTHUAT') : ?>

@@ -25,6 +25,11 @@ class DanhSachLop{
 		else return $this->_collection->find();
 	}
 
+	public function get_one_hocsinh(){
+		$query = array('id_namhoc' => new MongoId($this->id_namhoc), 'id_lophoc' => new MongoId($this->id_lophoc), 'id_hocsinh' => new MongoId($this->id_hocsinh));
+		return $this->_collection->findOne($query);
+	}
+
 	public function get_list_lophoctheonam(){
 		$query = array('id_namhoc'=> new MongoId($this->id_namhoc));
 		return $this->_collection->distinct("id_lophoc", $query);
@@ -135,6 +140,11 @@ class DanhSachLop{
 
 	public function get_bangdiem(){
 		$query = array('$and' => array(array('id_lophoc'=> new MongoId($this->id_lophoc)),array('id_namhoc'=> new MongoId($this->id_namhoc)), array('$or'=>array(array('hocky1.id_monhoc'=>new MongoId($this->id_monhoc)), array('hocky2.id_monhoc'=> new MongoId($this->id_monhoc))))));
+		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));
+	}
+
+	public function get_bangdiem_all(){
+		$query = array('$and' => array(array('id_lophoc'=> new MongoId($this->id_lophoc)),array('id_namhoc'=> new MongoId($this->id_namhoc))));
 		return $this->_collection->find($query)->sort(array('id_hocsinh'=>1));
 	}
 

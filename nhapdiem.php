@@ -171,9 +171,9 @@ $giaovien->id = $id_gvbm; $gvbm = $giaovien->get_one();
 	$arr_hocsinh = sort_danhsach($arr_hocsinh);
 	$r = 1; $tabindex=0;
 	foreach($arr_hocsinh as $dsl){
-		$a = explode('---', $dsl); $id_hocsinh = end($a);
-		$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one();
-		$hs = $hocsinh->get_one();
+		$a = explode('---', trim($dsl)); $id_hocsinh = end($a);
+		$hocsinh->id = $id_hocsinh; $hs = $hocsinh->get_one();$hs = $hocsinh->get_one();
+		$danhsachlop->id_hocsinh = $id_hocsinh; $ds = $danhsachlop->get_one_hocsinh();
 		if($r%2==0) $class='eve'; else $class = 'odd';
 		if($r%5==0) $line='sp'; else $line='';
 		echo '<input type="hidden" name="id_hocsinh[]" value="'.$id_hocsinh.'">';
@@ -181,31 +181,31 @@ $giaovien->id = $id_gvbm; $gvbm = $giaovien->get_one();
 		echo '<td align="center">'.$r.'</td>';
 		echo '<td align="center">'.$hs['masohocsinh'].'</td>';
 		echo '<td><b>&nbsp;'.$hs['hoten'].'</b></td>';
-		if(isset($dsl[$hocky]) && $dsl[$hocky]){
+		if(isset($ds[$hocky]) && $ds[$hocky]){
 			$cols=0;
-			foreach($dsl[$hocky] as $hk){
+			foreach($ds[$hocky] as $hk){
 				if($hk['id_monhoc'] == $id_monhoc){
 					//diem mieng (3 cot)
 					for($i=0; $i<3; $i++){
 						if($i==2 && !in_array($mamonhoc, $arr_monhocdanhgia)) $class='border-right'; else $class='';
 						$diemmieng = isset($hk['diemmieng'][$i]) ? $hk['diemmieng'][$i] : '';
-						echo '<td class="marks '.$class.'"><input type="text" name="'.$dsl['id_hocsinh'].'_diem[]" class="marks" value="'.$diemmieng.'" tabindex='.$tabindex.'></td>';$tabindex++;
+						echo '<td class="marks '.$class.'"><input type="text" name="'.$ds['id_hocsinh'].'_diem[]" class="marks" value="'.$diemmieng.'" tabindex='.$tabindex.'></td>';$tabindex++;
 					}
 					//diem15phut (5 cot)
 					for($i=0; $i<5; $i++){
 						if($i==4) $class='border-right'; else $class='';
 						$diem15phut = isset($hk['diem15phut'][$i]) ? $hk['diem15phut'][$i] : '';
-						echo '<td class="marks '.$class.'"><input type="text" name="'.$dsl['id_hocsinh'].'_diem[]" class="marks" value="'.$diem15phut.'" tabindex='.$tabindex.'></td>';$tabindex++;
+						echo '<td class="marks '.$class.'"><input type="text" name="'.$ds['id_hocsinh'].'_diem[]" class="marks" value="'.$diem15phut.'" tabindex='.$tabindex.'></td>';$tabindex++;
 					}
 					//diem1tiet (6 cot)
 					for($i=0; $i<6; $i++){
 						if($i==5) $class='border-right'; else $class='';
 						$diem1tiet = isset($hk['diem1tiet'][$i]) ? $hk['diem1tiet'][$i] : '';
-						echo '<td class="marks '.$class.'"><input type="text" name="'.$dsl['id_hocsinh'].'_diem[]" class="marks" value="'.$diem1tiet.'" tabindex='.$tabindex.'></td>';$tabindex++;
+						echo '<td class="marks '.$class.'"><input type="text" name="'.$ds['id_hocsinh'].'_diem[]" class="marks" value="'.$diem1tiet.'" tabindex='.$tabindex.'></td>';$tabindex++;
 					}
 					//diemthi (1 cot)
 					$diemthi = isset($hk['diemthi']) ? $hk['diemthi'][0] : '';
-					echo '<td class="marks border-right"><input type="text" name="'.$dsl['id_hocsinh'].'_diem[]" class="marks" value="'.$diemthi.'" tabindex='.$tabindex.'></td>';$tabindex++;
+					echo '<td class="marks border-right"><input type="text" name="'.$ds['id_hocsinh'].'_diem[]" class="marks" value="'.$diemthi.'" tabindex='.$tabindex.'></td>';$tabindex++;
 					$cols++;
 				}
 			}
@@ -213,7 +213,7 @@ $giaovien->id = $id_gvbm; $gvbm = $giaovien->get_one();
 				for($cell=0; $cell<15; $cell++){
 					if(($cell==2 && !in_array($mamonhoc, $arr_monhocdanhgia)) || $cell==7 || $cell == 13 || $cell == 14) $class= 'border-right';
 					else $class='';
-					echo '<td class="marks '.$class.'"><input type="text" name="'.$dsl['id_hocsinh'].'_diem[]" class="marks" value="" tabindex='.$tabindex.'></td>'; $tabindex++;
+					echo '<td class="marks '.$class.'"><input type="text" name="'.$ds['id_hocsinh'].'_diem[]" class="marks" value="" tabindex='.$tabindex.'></td>'; $tabindex++;
 				}
 			}
 		} else {
