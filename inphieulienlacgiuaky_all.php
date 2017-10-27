@@ -41,7 +41,7 @@ if(isset($_GET['submit'])){
     <script src="js/metro.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <style type="text/css" media="screen">
-		@media print {  
+		@media print {
 		  	@page {
 		    	size: 210mm 297mm;  /* landscape */
 		    	margin: 15mm;
@@ -54,6 +54,8 @@ if(isset($_GET['submit'])){
 <?php
 $giangday->id_lophoc = $id_lophoc; $giangday->id_namhoc = $id_namhoc;
 $list_monhoc = $giangday->get_list_monhoc();
+$lophoc->id = $id_lophoc; $lh = $lophoc->get_one();
+$namhoc->id = $id_namhoc; $nh = $namhoc->get_one();
 require_once('get_scores_hk1.php'); require_once('get_scores_hk2.php');
 $arr_hocky = array('hocky1','hocky2');require_once('get_scores_cn.php');
 $scores_hk1 = sort_arr_desc($ranges_hk1);
@@ -73,6 +75,7 @@ $danhhieu_hk1='';$danhhieu_hk2='';$danhhieu_cn='';
 echo '<div class="page-a4">';
 $danhsachlop->id_hocsinh = $ds['id_hocsinh'];
 $phieulienlac_list = $danhsachlop->get_phieulienlac();
+$hocsinh->id = $ds['id_hocsinh']; $hs = $hocsinh->get_one();
 if(isset($phieulienlac_list) && $phieulienlac_list): ?>
 <table width="850" align="center" border="0" cellpadding="5">
 	<tr>
@@ -89,11 +92,6 @@ if(isset($phieulienlac_list) && $phieulienlac_list): ?>
 	</tr>
 	<tr>
 		<td colspan="3" align="center" width="850">
-		<?php 
-			$hocsinh->id = $ds['id_hocsinh']; $hs = $hocsinh->get_one(); 
-			$lophoc->id = $id_lophoc; $lh = $lophoc->get_one();
-			$namhoc->id = $id_namhoc; $nh = $namhoc->get_one();
-		?>
 		<div style="font-size:15px;">
 		Kết quả học tập của: <b><font color="#000000"><?php echo $hs['hoten']; ?></font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		Lớp: <b><font color="#000000"><?php echo $lh['tenlophoc']; ?></font></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -104,7 +102,7 @@ if(isset($phieulienlac_list) && $phieulienlac_list): ?>
 </table>
 <!--<fieldset>
 <legend>Điểm chi tiết</legend>-->
-<table width="100%" border="1" cellpadding="5" id="bangdiem"> 
+<table width="100%" border="1" cellpadding="5" id="bangdiem">
 	<tr>
 		<th rowspan="2" width="40">STT</th>
 		<th rowspan="2" width="150" class="border_right">Môn học</th>
@@ -175,7 +173,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 								//if(isset($hk['diem1tiet'])){
 									//Toi da 5 cot
 								for($i=0; $i<6; $i++){
@@ -187,7 +185,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 								//if(isset($hk['diemthi'])){
 								for($i=0; $i<1; $i++){
 									if(isset($hk['diemthi'][$i])){
@@ -237,7 +235,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 								//if(isset($hk2['diem15phut'])){
 									//Toi da 5 cot
 								for($i=0; $i<5; $i++){
@@ -249,7 +247,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks"></td>';
 									}
 								}
-								//} 
+								//}
 
 								//if(isset($hk2['diem1tiet'])){
 								for($i=0; $i<6; $i++){
@@ -274,7 +272,7 @@ if(isset($list_monhoc) && $list_monhoc){
 										echo '<td class="marks border_right"></td>';
 									}
 								}
-							} 
+							}
 						}
 						if($col==0){
 							for($i=0; $i<15;$i++){
@@ -306,7 +304,7 @@ if(isset($list_monhoc) && $list_monhoc){
 							if($trungbinh1 < 2) $trungbinhduoi2_hk1++;
 						}
 					} else{
-						$trungbinh1 = '';	
+						$trungbinh1 = '';
 					}
 
 					if($sum_diem_mon2 && $count_diem_mon2){
@@ -333,7 +331,7 @@ if(isset($list_monhoc) && $list_monhoc){
 							if($canam < 2) $trungbinhduoi2_cn++;
 						}
 					} else { $canam = ''; }
-					
+
 					echo '<td class="marks">'.(($trungbinh1 && is_numeric($trungbinh1)) ? format_decimal($trungbinh1,1) : $trungbinh1).'</td>';
 					echo '<td class="marks">'.(($trungbinh2 && is_numeric($trungbinh2)) ? format_decimal($trungbinh2,1) : $trungbinh2).'</td>';
 					echo '<td class="marks">'.(($canam && is_numeric($canam)) ? format_decimal($canam,1) : $canam).'</td>';
@@ -345,7 +343,7 @@ if(isset($list_monhoc) && $list_monhoc){
 }
 ?>
 </table>
-<table width="100%" border="1" cellpadding="5" id="bangdiem" style="margin-top:3px;"> 
+<table width="100%" border="1" cellpadding="5" id="bangdiem" style="margin-top:3px;">
 	<tr>
 		<th rowspan="2" width="40">STT</th>
 		<th rowspan="2" width="150" class="border_right">Môn học</th>
@@ -437,17 +435,17 @@ if(isset($list_monhoc) && $list_monhoc){
 						if($col==0){
 							for($i=0; $i<15;$i++){
 								if($i==14){
-									echo '<td class="marks border_right"></td>';	
+									echo '<td class="marks border_right"></td>';
 								} else {
 									echo '<td class="marks"></td>';
 								}
-								
+
 							}
 						}
 					} else {
 						for($i=0; $i<15;$i++){
 							if($i==14){
-								echo '<td class="marks border_right"></td>';	
+								echo '<td class="marks border_right"></td>';
 							} else {
 								echo '<td class="marks"></td>';
 							}
@@ -509,12 +507,12 @@ if(isset($list_monhoc) && $list_monhoc){
 									}
 								}
 								//}
-							} 
+							}
 						}
 						if($col==0){
 							for($i=0; $i<15;$i++){
 								if($i==14){
-									echo '<td class="marks border_right"></td>';	
+									echo '<td class="marks border_right"></td>';
 								} else {
 									echo '<td class="marks"></td>';
 								}
@@ -523,7 +521,7 @@ if(isset($list_monhoc) && $list_monhoc){
 					} else {
 						for($i=0; $i<15;$i++){
 							if($i==14){
-								echo '<td class="marks border_right"></td>';	
+								echo '<td class="marks border_right"></td>';
 							} else {
 								echo '<td class="marks"></td>';
 							}
@@ -552,14 +550,14 @@ if(isset($list_monhoc) && $list_monhoc){
 					} else {
 						$trungbinh2 = '';
 					}
-					$canam = $trungbinh2; if($canam=='Đ'){ $trungbinh_d_cn++; }				 
+					$canam = $trungbinh2; if($canam=='Đ'){ $trungbinh_d_cn++; }
 					echo '<td class="marks">'.(($trungbinh1 && is_numeric($trungbinh1)) ? format_decimal($trungbinh1,1) : $trungbinh1).'</td>';
 					echo '<td class="marks">'.(($trungbinh2 && is_numeric($trungbinh2)) ? format_decimal($trungbinh2,1) : $trungbinh2).'</td>';
 					echo '<td class="marks">'.(($canam && is_numeric($canam)) ? format_decimal($canam,1) : $canam).'</td>';
 				}
 			echo '</tr>';
 			$j++;
-		} 
+		}
 	}
 	?>
 </table>
@@ -837,7 +835,7 @@ if(isset($list_monhoc) && $list_monhoc){
 						}
 					}
 					?>
-				</ol>				
+				</ol>
 			</div>
 		</td>
 		<td width="30%" style="vertical-align:top;">
@@ -851,7 +849,7 @@ if(isset($list_monhoc) && $list_monhoc){
 						}
 					}
 					?>
-				</ol>				
+				</ol>
 			</div>
 		</td>
 		<td width="39%" style="vertical-align:top;">
